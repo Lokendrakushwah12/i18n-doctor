@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     description: defaultDescription,
     images: [
       {
-        url: "/og.png?v=1",
+        url: "/og.png",
         width: 1200,
         height: 630,
         alt: "i18n.doctor — Scan & Fix Broken Translations",
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: defaultTitle,
     description: defaultDescription,
-    images: ["/og.png?v=1"],
+    images: ["/og.png"],
     creator: "@lokendratwt",
   },
   icons: {

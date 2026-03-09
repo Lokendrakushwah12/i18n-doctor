@@ -1,33 +1,41 @@
-import { SiteHeader } from "@workspace/ui/components/site-header";
-import { SiteFooter } from "@workspace/ui/components/site-footer";
+import {
+  ArrowRightIcon,
+  CursorArrowRippleIcon,
+  GlobeAmericasIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/20/solid";
 import {
   PageHeader,
-  PageHeaderHeading,
   PageHeaderDescription,
+  PageHeaderHeading,
 } from "@workspace/ui/components/page-header";
-import { Button } from "@workspace/ui/ui/button";
-import { Input } from "@workspace/ui/ui/input";
+import { SiteFooter } from "@workspace/ui/components/site-footer";
+import { SiteHeader } from "@workspace/ui/components/site-header";
 import { Badge } from "@workspace/ui/ui/badge";
-import { Card, CardTitle, CardDescription } from "@workspace/ui/ui/card";
+import { Button } from "@workspace/ui/ui/button";
+import { Card, CardDescription, CardTitle } from "@workspace/ui/ui/card";
+import { Input } from "@workspace/ui/ui/input";
 import { Separator } from "@workspace/ui/ui/separator";
-import { ArrowRightIcon, GlobeIcon, SearchIcon, WrenchIcon, type LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
+import type { ComponentType, SVGProps } from "react";
 
-const steps: { icon: LucideIcon; title: string; description: string }[] = [
+type Icon = ComponentType<SVGProps<SVGSVGElement>>;
+
+const steps: { icon: Icon; title: string; description: string }[] = [
   {
-    icon: SearchIcon,
+    icon: MagnifyingGlassIcon,
     title: "Paste a repo URL",
     description:
       "Enter any public GitHub repo. We auto-detect locale files in common patterns like locales/, i18n/, public/locales/.",
   },
   {
-    icon: GlobeIcon,
+    icon: GlobeAmericasIcon,
     title: "Get a health report",
     description:
       "See per-locale coverage, missing keys, untranslated strings, and orphan keys — all in a visual dashboard.",
   },
   {
-    icon: WrenchIcon,
+    icon: CursorArrowRippleIcon,
     title: "Fix with one click",
     description:
       "Lingo.dev translates all missing strings instantly. Download the fixed files or open a PR directly.",
@@ -93,7 +101,7 @@ export default function Page() {
             <div className="grid gap-6 sm:grid-cols-3">
               {steps.map((step) => (
                 <Card key={step.title} className="items-center gap-0 p-4">
-                  <div className="flex size-12 items-center justify-center rounded-xl border border-primary/10 bg-primary/10 mb-4">
+                  <div className="flex size-12 items-center justify-center rounded-xl border border-primary/5 bg-primary/5 mb-4">
                     <step.icon className="size-5 text-primary" />
                   </div>
                   <CardTitle className="font-heading text-lg text-center">{step.title}</CardTitle>
