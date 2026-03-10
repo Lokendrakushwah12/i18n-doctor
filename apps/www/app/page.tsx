@@ -1,5 +1,4 @@
 import {
-  ArrowRightIcon,
   CursorArrowRippleIcon,
   GlobeAmericasIcon,
   MagnifyingGlassIcon,
@@ -12,12 +11,11 @@ import {
 import { SiteFooter } from "@workspace/ui/components/site-footer";
 import { SiteHeader } from "@workspace/ui/components/site-header";
 import { Badge } from "@workspace/ui/ui/badge";
-import { Button } from "@workspace/ui/ui/button";
 import { Card, CardDescription, CardTitle } from "@workspace/ui/ui/card";
-import { Input } from "@workspace/ui/ui/input";
 import { Separator } from "@workspace/ui/ui/separator";
 import type { Metadata } from "next";
 import type { ComponentType, SVGProps } from "react";
+import { ScanForm } from "@/components/scan-form";
 
 type Icon = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -72,20 +70,7 @@ export default function Page() {
           <PageHeaderDescription className="max-w-2xl text-balance">
             Paste a public GitHub repo URL and instantly get a localization health report, missing keys, untranslated strings, and coverage per locale — then fix everything in one click.
           </PageHeaderDescription>
-          <form className="mt-4 flex w-full max-w-xl flex-col sm:flex-row items-center gap-3">
-            <Input
-              type="url"
-              name="repo"
-              placeholder="https://github.com/owner/repo"
-              size="lg"
-              className="font-mono flex-1"
-              required
-            />
-            <Button type="submit" size="lg" className="shrink-0 w-full sm:w-auto">
-              Scan Repo
-              <ArrowRightIcon className="size-4" />
-            </Button>
-          </form>
+          <ScanForm />
           <p className="text-xs text-muted-foreground/60 font-mono">
             Works with any public repo — supports JSON, YAML, and .po locale files
           </p>
