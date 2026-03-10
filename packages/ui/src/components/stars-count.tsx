@@ -26,7 +26,7 @@ export function StarsCount() {
   if (stars === null) return null
 
   return (
-    <span className="w-8 text-xs text-muted-foreground tabular-nums max-sm:sr-only">
+    <span className="text-xs text-muted-foreground tabular-nums max-sm:sr-only">
       {stars >= 1000 ? `${(stars / 1000).toFixed(1)}k` : stars.toLocaleString()}
     </span>
   )

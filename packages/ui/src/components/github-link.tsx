@@ -12,7 +12,7 @@ export function GitHubLink() {
     <Button
       size="sm"
       variant="ghost"
-      className="relative h-8 shadow-none max-sm:w-8"
+      className="relative h-8 shadow-none"
       render={
         <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
           <HugeiconsIcon icon={GithubIcon} className="size-4" strokeWidth={2} />

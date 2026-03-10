@@ -26,9 +26,9 @@ export function SiteHeader({
             </Link>
           </div>
           <div className="ms-auto flex items-center md:flex-1 md:justify-end">
-            {children}
             <GitHubLink />
             <ModeSwitcher />
+            {children}
           </div>
         </div>
       </div>
