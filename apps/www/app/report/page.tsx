@@ -11,6 +11,7 @@ import { Button } from "@workspace/ui/ui/button"
 import { Badge } from "@workspace/ui/ui/badge"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@workspace/ui/ui/card"
 import { Separator } from "@workspace/ui/ui/separator"
+import { ScrollArea } from "@workspace/ui/ui/scroll-area"
 import type { ScanReport, LocaleHealth } from "@/lib/diff-engine"
 
 interface ScanResponse {
@@ -27,6 +28,17 @@ interface ScanResponse {
     locales: string[]
   }
   report: ScanReport
+}
+
+function Spinner({ label }: { label?: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 py-24">
+      <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />
+      {label && (
+        <p className="font-mono text-sm text-muted-foreground">{label}</p>
+      )}
+    </div>
+  )
 }
 
 function CoverageBar({ coverage }: { coverage: number }) {
@@ -48,6 +60,31 @@ function CoverageBar({ coverage }: { coverage: number }) {
       <span className="text-sm font-mono tabular-nums w-10 text-right">
         {coverage}%
       </span>
+    </div>
+  )
+}
+
+function KeyList({ label, keys, variant }: { label: string; keys: string[]; variant: "error" | "warning" | "muted" }) {
+  if (keys.length === 0) return null
+
+  const colorMap = {
+    error: "text-destructive-foreground",
+    warning: "text-warning-foreground",
+    muted: "text-muted-foreground",
+  }
+
+  return (
+    <div>
+      <p className={`${colorMap[variant]} font-medium mb-1`}>
+        {label} ({keys.length})
+      </p>
+      <ScrollArea scrollFade className="max-h-40">
+        <ul className="list-disc list-inside text-muted-foreground">
+          {keys.map((k) => (
+            <li key={k}>{k}</li>
+          ))}
+        </ul>
+      </ScrollArea>
     </div>
   )
 }
@@ -86,47 +123,76 @@ function LocaleCard({ locale }: { locale: LocaleHealth }) {
           </Button>
           {expanded && (
             <div className="mt-3 space-y-3 text-xs font-mono">
-              {locale.missingKeys.length > 0 && (
-                <div>
-                  <p className="text-destructive-foreground font-medium mb-1">
-                    Missing keys ({locale.missingKeys.length})
-                  </p>
-                  <ul className="list-disc list-inside text-muted-foreground max-h-40 overflow-y-auto">
-                    {locale.missingKeys.map((k) => (
-                      <li key={k}>{k}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {locale.untranslatedKeys.length > 0 && (
-                <div>
-                  <p className="text-warning-foreground font-medium mb-1">
-                    Untranslated ({locale.untranslatedKeys.length})
-                  </p>
-                  <ul className="list-disc list-inside text-muted-foreground max-h-40 overflow-y-auto">
-                    {locale.untranslatedKeys.map((k) => (
-                      <li key={k}>{k}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {locale.orphanKeys.length > 0 && (
-                <div>
-                  <p className="text-muted-foreground font-medium mb-1">
-                    Orphan keys ({locale.orphanKeys.length})
-                  </p>
-                  <ul className="list-disc list-inside text-muted-foreground max-h-40 overflow-y-auto">
-                    {locale.orphanKeys.map((k) => (
-                      <li key={k}>{k}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <KeyList label="Missing keys" keys={locale.missingKeys} variant="error" />
+              <KeyList label="Untranslated" keys={locale.untranslatedKeys} variant="warning" />
+              <KeyList label="Orphan keys" keys={locale.orphanKeys} variant="muted" />
             </div>
           )}
         </CardContent>
       )}
     </Card>
+  )
+}
+
+function StatCard({ value, label }: { value: string | number; label: string }) {
+  return (
+    <Card className="gap-1 py-4 px-4">
+      <p className="text-2xl font-heading">{value}</p>
+      <p className="text-xs text-muted-foreground font-mono">{label}</p>
+    </Card>
+  )
+}
+
+function RepoHeader({ repo, localeGroup, sourceLocale }: {
+  repo: ScanResponse["repo"]
+  localeGroup: ScanResponse["localeGroup"]
+  sourceLocale: string
+}) {
+  return (
+    <div className="mb-8">
+      <div className="flex items-center gap-2 mb-1">
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          render={<Link href="/" aria-label="Back"><ArrowLeftIcon className="size-4" /></Link>}
+        />
+        <h1 className="font-heading text-2xl sm:text-3xl">
+          {repo.owner}/{repo.repo}
+        </h1>
+      </div>
+      {repo.description && (
+        <p className="text-muted-foreground text-sm ml-9">{repo.description}</p>
+      )}
+      <div className="flex items-center gap-3 mt-2 ml-9">
+        <Badge variant="outline" size="sm" className="font-mono">
+          {localeGroup.basePath}/
+        </Badge>
+        <Badge variant="outline" size="sm" className="font-mono">
+          {localeGroup.style}
+        </Badge>
+        <Badge variant="outline" size="sm" className="font-mono">
+          {sourceLocale} (source)
+        </Badge>
+      </div>
+    </div>
+  )
+}
+
+function ErrorState({ message }: { message: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 py-24 text-center px-4">
+      <p className="text-destructive font-mono text-sm">{message}</p>
+      <Button
+        variant="outline"
+        size="sm"
+        render={
+          <Link href="/">
+            <ArrowLeftIcon className="size-4" />
+            Try another repo
+          </Link>
+        }
+      />
+    </div>
   )
 }
 
@@ -168,35 +234,8 @@ function ReportContent() {
     scan()
   }, [repoUrl])
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-4 py-24">
-        <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />
-        <p className="font-mono text-sm text-muted-foreground">
-          Scanning repository…
-        </p>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-4 py-24 text-center px-4">
-        <p className="text-destructive font-mono text-sm">{error}</p>
-        <Button
-          variant="outline"
-          size="sm"
-          render={
-            <Link href="/">
-              <ArrowLeftIcon className="size-4" />
-              Try another repo
-            </Link>
-          }
-        />
-      </div>
-    )
-  }
-
+  if (loading) return <Spinner label="Scanning repository…" />
+  if (error) return <ErrorState message={error} />
   if (!data) return null
 
   const { repo, localeGroup, report } = data
@@ -204,57 +243,17 @@ function ReportContent() {
   return (
     <div className="w-full px-4 py-8 sm:py-12">
       <div className="mx-auto max-w-4xl">
-        {/* Repo info */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-1">
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              render={<Link href="/" aria-label="Back"><ArrowLeftIcon className="size-4" /></Link>}
-            />
-            <h1 className="font-heading text-2xl sm:text-3xl">
-              {repo.owner}/{repo.repo}
-            </h1>
-          </div>
-          {repo.description && (
-            <p className="text-muted-foreground text-sm ml-9">{repo.description}</p>
-          )}
-          <div className="flex items-center gap-3 mt-2 ml-9">
-            <Badge variant="outline" size="sm" className="font-mono">
-              {localeGroup.basePath}/
-            </Badge>
-            <Badge variant="outline" size="sm" className="font-mono">
-              {localeGroup.style}
-            </Badge>
-            <Badge variant="outline" size="sm" className="font-mono">
-              {report.sourceLocale} (source)
-            </Badge>
-          </div>
-        </div>
+        <RepoHeader repo={repo} localeGroup={localeGroup} sourceLocale={report.sourceLocale} />
 
         <Separator />
 
-        {/* Summary cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 my-8">
-          <Card className="gap-1 py-4 px-4">
-            <p className="text-2xl font-heading">{report.totalSourceKeys}</p>
-            <p className="text-xs text-muted-foreground font-mono">Total keys</p>
-          </Card>
-          <Card className="gap-1 py-4 px-4">
-            <p className="text-2xl font-heading">{report.summary.avgCoverage}%</p>
-            <p className="text-xs text-muted-foreground font-mono">Avg coverage</p>
-          </Card>
-          <Card className="gap-1 py-4 px-4">
-            <p className="text-2xl font-heading">{report.summary.totalMissing}</p>
-            <p className="text-xs text-muted-foreground font-mono">Missing keys</p>
-          </Card>
-          <Card className="gap-1 py-4 px-4">
-            <p className="text-2xl font-heading">{report.summary.totalOrphan}</p>
-            <p className="text-xs text-muted-foreground font-mono">Orphan keys</p>
-          </Card>
+          <StatCard value={report.totalSourceKeys} label="Total keys" />
+          <StatCard value={`${report.summary.avgCoverage}%`} label="Avg coverage" />
+          <StatCard value={report.summary.totalMissing} label="Missing keys" />
+          <StatCard value={report.summary.totalOrphan} label="Orphan keys" />
         </div>
 
-        {/* Per-locale breakdown */}
         <h2 className="font-heading text-xl mb-4">
           Locale Health ({report.summary.totalLocales} locale{report.summary.totalLocales !== 1 ? "s" : ""})
         </h2>
@@ -274,18 +273,14 @@ function ReportContent() {
   )
 }
 
+// ─── Page ───────────────────────────────────────────────────────────────
+
 export default function ReportPage() {
   return (
     <>
       <SiteHeader><AuthButton /></SiteHeader>
       <main className="z-40 mx-auto flex w-full max-w-6xl min-h-screen flex-1 flex-col items-center justify-start border-x border-border/50 bg-sidebar">
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center py-24">
-              <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />
-            </div>
-          }
-        >
+        <Suspense fallback={<Spinner />}>
           <ReportContent />
         </Suspense>
       </main>
