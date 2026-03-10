@@ -10,7 +10,7 @@ export function ComponentSource({ name, className }: ComponentSourceProps) {
     <div className={className}>
       <div className="rounded-lg border bg-muted p-4">
         <pre className="overflow-x-auto text-sm">
-          <code>// Component source for {name}</code>
+          <code>{`// Component source for ${name}`}</code>
         </pre>
       </div>
     </div>

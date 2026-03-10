@@ -2,7 +2,6 @@ import "./globals.css"
 
 import type { Metadata } from "next"
 import { Fustat as FontHeading, Fustat as FontSans, Geist_Mono as FontMono } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@workspace/ui/components/theme-provider"
 
 
@@ -108,43 +107,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      name: "i18n.doctor",
-      alternateName: "i18n.doctor — Scan & Fix Broken Translations",
-      url: siteUrl,
-      description: defaultDescription,
-      publisher: { "@id": `${siteUrl}#organization` },
-      inLanguage: "en-US",
-      potentialAction: {
-        "@type": "SearchAction",
-        target: { "@type": "EntryPoint", url: siteUrl },
-        "query-input": "required name=query",
-      },
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "@id": `${siteUrl}#organization`,
-      name: "i18n.doctor",
-      url: siteUrl,
-      logo: `${siteUrl}/favicon.svg`,
-      description: "Scan any public GitHub repo for broken, missing, or incomplete translations — and fix them in one click.",
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      name: "i18n.doctor",
-      description: defaultDescription,
-      url: siteUrl,
-      publisher: { "@id": `${siteUrl}#organization` },
-      inLanguage: "en-US",
-      applicationCategory: "DeveloperApplication",
-    },
-  ]
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

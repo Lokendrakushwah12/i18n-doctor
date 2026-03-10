@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import { createClient } from "@/lib/supabase/client"
 import { Card } from "@workspace/ui/ui/card"
 import { Separator } from "@workspace/ui/ui/separator"
@@ -32,9 +33,11 @@ export default function ProfilePage() {
 
       <Card className="p-6 gap-0">
         <div className="flex items-center gap-4 mb-6">
-          <img
+          <Image
             src={meta.avatar_url}
             alt={meta.user_name ?? "avatar"}
+            width={64}
+            height={64}
             className="size-16 rounded-full"
           />
           <div>

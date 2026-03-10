@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@workspace/ui/ui/button"
 import {
@@ -64,9 +65,11 @@ export function AuthButton() {
         <DropdownMenuTrigger
           className="flex items-center gap-1.5 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
         >
-          <img
+          <Image
             src={user.user_metadata.avatar_url}
             alt={user.user_metadata.user_name ?? "avatar"}
+            width={28}
+            height={28}
             className="size-7 rounded-full ml-4"
           />
         </DropdownMenuTrigger>

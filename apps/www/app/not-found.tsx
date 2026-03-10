@@ -27,7 +27,7 @@ export default function NotFound() {
         <PageHeaderHeading className="lg:max-w-xl max-w-sm text-balance tracking-tight">
           Are you lost?</PageHeaderHeading>
         <PageHeaderDescription className="flex items-center gap-3 text-sm font-mono tracking-tight text-muted-foreground">
-          This page doesn't exist. Let's get you back to scanning repos.
+          This page doesn&apos;t exist. Let&apos;s get you back to scanning repos.
         </PageHeaderDescription>
         <div className="mt-4">
           <Button
