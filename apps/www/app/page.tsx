@@ -15,6 +15,7 @@ import { Card, CardDescription, CardTitle } from "@workspace/ui/ui/card";
 import { Separator } from "@workspace/ui/ui/separator";
 import type { Metadata } from "next";
 import type { ComponentType, SVGProps } from "react";
+import { AuthButton } from "@/components/auth-button";
 import { ScanForm } from "@/components/scan-form";
 
 type Icon = ComponentType<SVGProps<SVGSVGElement>>;
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <SiteHeader />
+      <SiteHeader><AuthButton /></SiteHeader>
       <main className="z-40  mx-auto flex w-full max-w-6xl min-h-screen flex-1 flex-col items-center justify-start border-x border-border/50 bg-sidebar">
         <PageHeader className="px-4 py-0">
           <Badge variant="outline" size="sm" className="font-mono uppercase tracking-wider">

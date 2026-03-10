@@ -75,6 +75,43 @@ pnpm dev
 
 The app runs at `http://localhost:3000`.
 
+## Build Plan
+
+### Scaffolding & Integrations
+- [x] Next.js monorepo scaffold (Turborepo + pnpm workspaces)
+- [x] Supabase project setup (auth + database)
+- [x] Set up Lingo.dev CLI and `i18n.json` config (dogfooding the app)
+- [x] GitHub Action for Lingo.dev CI/CD auto-translation on push
+
+### Core Scanner
+- [x] GitHub API helpers (repo info, tree listing, file content fetching)
+- [x] Locale file detector (auto-detect `locales/`, `i18n/`, etc.)
+- [x] Locale parser (JSON, YAML, `.po` → flat key map)
+- [x] Diff engine (compare source vs target locales)
+- [x] `/api/scan` endpoint (full pipeline)
+- [x] Report dashboard (`/report?repo=…`) with coverage bars, per-locale cards, expandable issues
+
+### Auth & Persistence
+- [x] Enable GitHub OAuth
+- [x] Create `reports` table with RLS policies
+- [ ] Store scan results in Supabase `reports` table
+- [ ] Recent scans list on home page (from DB)
+- [ ] Shareable report URLs (`/report/[id]`)
+
+### One-Click Fix
+- [ ] Lingo.dev SDK integration for translating missing keys server-side
+- [ ] "Fix with Lingo.dev" button on report page
+- [ ] Live diff preview (before/after)
+- [ ] Download fixed locale files as ZIP
+- [ ] Open a GitHub PR with fixes (uses GitHub OAuth token + `public_repo` scope)
+
+### Polish & Ship
+- [ ] Responsive UI polish & loading states
+- [ ] OG image / social share card for reports
+- [ ] Error handling & edge cases (rate limits, large repos, malformed files)
+- [x] Deploy to Vercel
+- [ ] Final README, demo video, hackathon submission
+
 ## Socials
 
 - Twitter: [@lokendratwt](https://x.com/lokendratwt)
