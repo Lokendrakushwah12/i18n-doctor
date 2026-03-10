@@ -3,12 +3,22 @@
 import { useSearchParams } from "next/navigation"
 import { useEffect, useState, Suspense } from "react"
 import Link from "next/link"
-import { ArrowLeftIcon } from "@heroicons/react/20/solid"
+import {
+  ArrowLeftIcon,
+  KeyIcon,
+  ChartBarIcon,
+  ExclamationTriangleIcon,
+  ArchiveBoxXMarkIcon,
+  EyeIcon,
+  EyeSlashIcon,
+} from "@heroicons/react/20/solid"
+import type { ComponentType, SVGProps } from "react"
 import { SiteHeader } from "@workspace/ui/components/site-header"
 import { AuthButton } from "@/components/auth-button"
 import { SiteFooter } from "@workspace/ui/components/site-footer"
 import { Button } from "@workspace/ui/ui/button"
 import { Badge } from "@workspace/ui/ui/badge"
+import { Progress } from "@workspace/ui/ui/progress"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@workspace/ui/ui/card"
 import { Separator } from "@workspace/ui/ui/separator"
 import { ScrollArea } from "@workspace/ui/ui/scroll-area"
@@ -50,17 +60,12 @@ function CoverageBar({ coverage }: { coverage: number }) {
         : "bg-destructive"
 
   return (
-    <div className="flex items-center gap-3 w-full">
-      <div className="h-2 flex-1 rounded-full bg-muted overflow-hidden">
-        <div
-          className={`h-full rounded-full transition-all ${color}`}
-          style={{ width: `${coverage}%` }}
-        />
-      </div>
-      <span className="text-sm font-mono tabular-nums w-10 text-right">
-        {coverage}%
-      </span>
-    </div>
+    <Progress
+      variant="lines"
+      value={coverage}
+      filledColor={color}
+      className="h-8"
+    />
   )
 }
 
@@ -78,8 +83,8 @@ function KeyList({ label, keys, variant }: { label: string; keys: string[]; vari
       <p className={`${colorMap[variant]} font-medium mb-1`}>
         {label} ({keys.length})
       </p>
-      <ScrollArea scrollFade className="max-h-40">
-        <ul className="list-disc list-inside text-muted-foreground">
+      <ScrollArea scrollFade className="h-fit max-h-40 overflow-auto">
+        <ul className="list-disc list-inside max-h-40 text-muted-foreground">
           {keys.map((k) => (
             <li key={k}>{k}</li>
           ))}
@@ -94,7 +99,7 @@ function LocaleCard({ locale }: { locale: LocaleHealth }) {
   const issues = locale.missingKeys.length + locale.untranslatedKeys.length + locale.orphanKeys.length
 
   return (
-    <Card className="gap-4 py-4">
+    <Card className="gap-4">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="font-mono text-base">{locale.locale}</CardTitle>
@@ -114,11 +119,12 @@ function LocaleCard({ locale }: { locale: LocaleHealth }) {
       {issues > 0 && (
         <CardContent className="pt-0">
           <Button
-            variant="ghost"
+            variant="secondary"
             size="sm"
             className="font-mono text-xs"
             onClick={() => setExpanded(!expanded)}
           >
+            {expanded ? <EyeSlashIcon className="size-3.5" /> : <EyeIcon className="size-3.5" />}
             {expanded ? "Hide details" : "Show details"}
           </Button>
           {expanded && (
@@ -134,9 +140,14 @@ function LocaleCard({ locale }: { locale: LocaleHealth }) {
   )
 }
 
-function StatCard({ value, label }: { value: string | number; label: string }) {
+function StatCard({ value, label, icon: Icon }: {
+  value: string | number
+  label: string
+  icon: ComponentType<SVGProps<SVGSVGElement>>
+}) {
   return (
     <Card className="gap-1 py-4 px-4">
+      <Icon className="size-4 text-muted-foreground mb-1" />
       <p className="text-2xl font-heading">{value}</p>
       <p className="text-xs text-muted-foreground font-mono">{label}</p>
     </Card>
@@ -248,10 +259,10 @@ function ReportContent() {
         <Separator />
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 my-8">
-          <StatCard value={report.totalSourceKeys} label="Total keys" />
-          <StatCard value={`${report.summary.avgCoverage}%`} label="Avg coverage" />
-          <StatCard value={report.summary.totalMissing} label="Missing keys" />
-          <StatCard value={report.summary.totalOrphan} label="Orphan keys" />
+          <StatCard icon={KeyIcon} value={report.totalSourceKeys} label="Total keys" />
+          <StatCard icon={ChartBarIcon} value={`${report.summary.avgCoverage}%`} label="Avg coverage" />
+          <StatCard icon={ExclamationTriangleIcon} value={report.summary.totalMissing} label="Missing keys" />
+          <StatCard icon={ArchiveBoxXMarkIcon} value={report.summary.totalOrphan} label="Orphan keys" />
         </div>
 
         <h2 className="font-heading text-xl mb-4">

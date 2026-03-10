@@ -1,52 +1,82 @@
-"use client"
+"use client";
 
-import { Progress as ProgressPrimitive } from "@base-ui/react/progress"
+import { Progress as ProgressPrimitive } from "@base-ui/react/progress";
 
-import { cn } from "@workspace/ui/lib/utils"
+import { cn } from "@workspace/ui/lib/utils";
+
+const LINES = 50;
 
 function Progress({
   className,
   children,
+  variant = "default",
+  filledColor,
   ...props
-}: ProgressPrimitive.Root.Props) {
+}: ProgressPrimitive.Root.Props & { variant?: "default" | "lines"; filledColor?: string }) {
+  const value = props.value ?? 0;
+  const filledCount = variant === "lines" ? Math.round((Number(value) / 100) * LINES) : undefined;
+
   return (
     <ProgressPrimitive.Root
-      data-slot="progress"
       className={cn("flex w-full flex-col gap-2", className)}
+      data-slot="progress"
+      data-variant={variant}
       {...props}
     >
       {children ? (
         children
+      ) : variant === "lines" ? (
+        <div
+          className={cn("flex h-full w-full gap-px overflow-hidden rounded-full bg-input",
+            variant == "lines" && "rounded-none gap-[2px] bg-transparent"
+            
+          )}
+          data-slot="progress-track"
+          role="progressbar"
+          aria-valuenow={Number(value)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          {Array.from({ length: LINES }, (_, i) => (
+            <div
+              key={i}
+              className={cn(
+                "w-1 flex-1 rounded-xl transition-colors duration-300",
+                i < filledCount! ? (filledColor ?? "bg-primary") : "bg-input",
+              )}
+            />
+          ))}
+        </div>
       ) : (
         <ProgressTrack>
           <ProgressIndicator />
         </ProgressTrack>
       )}
     </ProgressPrimitive.Root>
-  )
+  );
 }
 
 function ProgressLabel({ className, ...props }: ProgressPrimitive.Label.Props) {
   return (
     <ProgressPrimitive.Label
+      className={cn("font-medium text-sm", className)}
       data-slot="progress-label"
-      className={cn("text-sm font-medium", className)}
       {...props}
     />
-  )
+  );
 }
 
 function ProgressTrack({ className, ...props }: ProgressPrimitive.Track.Props) {
   return (
     <ProgressPrimitive.Track
-      data-slot="progress-track"
       className={cn(
         "block h-1.5 w-full overflow-hidden rounded-full bg-input",
-        className
+        className,
       )}
+      data-slot="progress-track"
       {...props}
     />
-  )
+  );
 }
 
 function ProgressIndicator({
@@ -55,21 +85,21 @@ function ProgressIndicator({
 }: ProgressPrimitive.Indicator.Props) {
   return (
     <ProgressPrimitive.Indicator
-      data-slot="progress-indicator"
       className={cn("bg-primary transition-all duration-500", className)}
+      data-slot="progress-indicator"
       {...props}
     />
-  )
+  );
 }
 
 function ProgressValue({ className, ...props }: ProgressPrimitive.Value.Props) {
   return (
     <ProgressPrimitive.Value
-      data-slot="progress-value"
       className={cn("text-sm tabular-nums", className)}
+      data-slot="progress-value"
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -78,4 +108,4 @@ export {
   ProgressTrack,
   ProgressIndicator,
   ProgressValue,
-}
+};

@@ -94,7 +94,13 @@ The app runs at `http://localhost:3000`.
 ### Auth & Persistence
 - [x] Enable GitHub OAuth
 - [x] Create `reports` table with RLS policies
+- [x] Dashboard page (past scans per user)
+- [x] Profile page (basic user info)
+- [x] Sidebar navigation (Dashboard, New Scan, Leaderboard, Profile)
+- [x] `/:owner/:repo` shortcut URL (auto-redirects to scan)
+- [x] Leaderboard page UI (benchmark dataset for i18n tooling)
 - [ ] Store scan results in Supabase `reports` table
+- [ ] Leaderboard data from Supabase (populates after reports are stored)
 - [ ] Recent scans list on home page (from DB)
 - [ ] Shareable report URLs (`/report/[id]`)
 

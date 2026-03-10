@@ -6,12 +6,14 @@ import {
   ClipboardDocumentListIcon,
   PlusIcon,
   UserCircleIcon,
+  TrophyIcon,
 } from "@heroicons/react/20/solid"
 import { cn } from "@workspace/ui/lib/utils"
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: ClipboardDocumentListIcon },
   { href: "/", label: "New Scan", icon: PlusIcon },
+  { href: "/leaderboard", label: "Leaderboard", icon: TrophyIcon },
   { href: "/profile", label: "Profile", icon: UserCircleIcon },
 ]
 
