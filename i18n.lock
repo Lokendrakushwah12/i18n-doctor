@@ -1,0 +1,21 @@
+version: 1
+checksums:
+  0f1e18f3378b2ee1609577d4e001a36a:
+    site/title: aa9f2db565a8bd5a3eaacf3ffec60916
+    site/tagline: 7832c1744ec40a1136cff2f43aabb959
+    hero/badge: c1660671a0c0b8bc035aa541ad7fa6c2
+    hero/heading: 259322f7d097db760b7f799b7b8143b6
+    hero/description: 65ac1be79e062ad5e4970ee786af197b
+    hero/cta: 1184305c88d38c42becc666d9d7e9fee
+    hero/hint: 5af99be09fa5e660c03952f76105cd6f
+    steps/title: 191d4f7f162cdb17f444531b7593c549
+    steps/paste/title: c706c3d12b2d1f796e00eae15c64c8cb
+    steps/paste/description: 15e76f6969b95f61ef23c2244f2424dd
+    steps/report/title: 868ecd51cfea250b5263d29f26f2fc5e
+    steps/report/description: 859b25e655fbf0c7064f1e805793fbe7
+    steps/fix/title: 6ea38a7da0ac67e30c2a1fa30e9fd68b
+    steps/fix/description: f150674ab975f8ef034dc75746eb259b
+    footer/copyright: d14a22451ad1e797275bbf0071ba0091
+    notFound/heading: 7862da36a5418fc96d8348dcb6804a42
+    notFound/description: 0c44ac684e2a7b711ed6725a9b5cc2ac
+    notFound/cta: 06e39094af03b71d68d1cd624785450a

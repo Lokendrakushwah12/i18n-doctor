@@ -1,0 +1,37 @@
+{
+  "site": {
+    "title": "i18n.doctor",
+    "tagline": "翻訳の問題をスキャン＆修正"
+  },
+  "hero": {
+    "badge": "ローカリゼーション健康診断",
+    "heading": "あらゆるリポジトリの翻訳ミスをスキャン＆修正",
+    "description": "公開GitHubリポジトリのURLを貼り付けるだけで、ローカリゼーションの健康診断レポート、不足しているキー、未翻訳の文字列、各ロケールごとのカバレッジを即座にチェックし、一括修正できます。",
+    "placeholder": "https://github.com/owner/repo",
+    "cta": "リポジトリをスキャン",
+    "hint": "すべての公開リポジトリに対応 — JSON、YAML、.poのロケールファイルが利用可能"
+  },
+  "steps": {
+    "title": "使い方",
+    "paste": {
+      "title": "リポジトリURLを貼り付ける",
+      "description": "任意の公開GitHubリポジトリを入力してください。locales/、i18n/、public/locales/など一般的なパターンからロケールファイルを自動検出します。"
+    },
+    "report": {
+      "title": "健康診断レポートを取得",
+      "description": "各ロケールのカバレッジ、不足しているキー、未翻訳文字列、孤立キーをすべてビジュアルダッシュボードで表示。"
+    },
+    "fix": {
+      "title": "ワンクリックで修正",
+      "description": "Lingo.devが不足している翻訳をすべて即座に対応。修正版ファイルのダウンロードやPRの直接作成も可能です。"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} i18n.doctor — 翻訳の問題をスキャン＆修正。"
+  },
+  "notFound": {
+    "heading": "お探しのページは見つかりませんでした",
+    "description": "このページは存在しません。リポジトリのスキャン画面に戻りましょう。",
+    "cta": "i18n.doctorに戻る"
+  }
+}

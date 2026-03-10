@@ -1,0 +1,37 @@
+{
+  "site": {
+    "title": "i18n.doctor",
+    "tagline": "扫描并修复翻译问题"
+  },
+  "hero": {
+    "badge": "本地化健康扫描器",
+    "heading": "扫描并修复任意仓库中的翻译问题",
+    "description": "粘贴一个公开的 GitHub 仓库链接，即刻生成本地化健康报告，查找缺失的键、未翻译的字符串以及各语言的覆盖率——一键即可全部修复。",
+    "placeholder": "https://github.com/owner/repo",
+    "cta": "扫描仓库",
+    "hint": "适用于任何公开仓库——支持 JSON、YAML 和 .po 语言文件"
+  },
+  "steps": {
+    "title": "使用方法",
+    "paste": {
+      "title": "粘贴仓库链接",
+      "description": "输入任何公开的 GitHub 仓库。我们会自动检测 locales/、i18n/、public/locales/ 等常见路径下的语言文件。"
+    },
+    "report": {
+      "title": "获取健康报告",
+      "description": "查看各语言版本的覆盖率、缺失键、未翻译内容及孤立键，所有数据一目了然。"
+    },
+    "fix": {
+      "title": "一键修复",
+      "description": "Lingo.dev 可瞬间翻译所有缺失内容。下载修正文件或直接打开 PR。"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} i18n.doctor — 扫描并修复翻译问题。"
+  },
+  "notFound": {
+    "heading": "迷路了吗？",
+    "description": "该页面不存在。让我们带你回到仓库扫描。",
+    "cta": "返回 i18n.doctor"
+  }
+}

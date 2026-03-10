@@ -1,0 +1,37 @@
+{
+  "site": {
+    "title": "i18n.doctor",
+    "tagline": "Fehlerhafte Übersetzungen erkennen & beheben"
+  },
+  "hero": {
+    "badge": "Lokalisierungs-Gesundheitscheck",
+    "heading": "Fehlerhafte Übersetzungen in jedem Repo erkennen & beheben",
+    "description": "Fügen Sie eine öffentliche GitHub-Repo-URL ein und erhalten Sie sofort einen Bericht zur Lokalisierungsqualität, fehlende Schlüssel, unübersetzte Strings und die Abdeckung pro Sprache – und beheben Sie alles mit nur einem Klick.",
+    "placeholder": "https://github.com/owner/repo",
+    "cta": "Repo scannen",
+    "hint": "Funktioniert mit jedem öffentlichen Repo – unterstützt JSON-, YAML- und .po-Locale-Dateien"
+  },
+  "steps": {
+    "title": "So funktioniert's",
+    "paste": {
+      "title": "Fügen Sie eine Repo-URL ein",
+      "description": "Geben Sie ein beliebiges öffentliches GitHub-Repo ein. Wir erkennen Locale-Dateien automatisch in gängigen Verzeichnissen wie locales/, i18n/, public/locales/."
+    },
+    "report": {
+      "title": "Erhalten Sie einen Qualitätsbericht",
+      "description": "Sehen Sie Abdeckung pro Sprache, fehlende Schlüssel, unübersetzte Strings und verwaiste Schlüssel – alles übersichtlich im Dashboard."
+    },
+    "fix": {
+      "title": "Mit einem Klick beheben",
+      "description": "Lingo.dev übersetzt alle fehlenden Strings sofort. Laden Sie die korrigierten Dateien herunter oder öffnen Sie direkt einen PR."
+    }
+  },
+  "footer": {
+    "copyright": "© {year} i18n.doctor — Fehlerhafte Übersetzungen erkennen & beheben."
+  },
+  "notFound": {
+    "heading": "Verlaufen?",
+    "description": "Diese Seite existiert nicht. Kehren Sie zurück zum Scannen der Repos.",
+    "cta": "Zurück zu i18n.doctor"
+  }
+}

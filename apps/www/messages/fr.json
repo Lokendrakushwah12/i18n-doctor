@@ -1,0 +1,37 @@
+{
+  "site": {
+    "title": "i18n.doctor",
+    "tagline": "Analyser et corriger les traductions défectueuses"
+  },
+  "hero": {
+    "badge": "Analyseur de santé de la localisation",
+    "heading": "Analysez et corrigez les traductions cassées dans n'importe quel dépôt",
+    "description": "Collez l’URL d’un dépôt GitHub public pour obtenir instantanément un rapport de santé sur la localisation, les clés manquantes, les chaînes non traduites et la couverture par langue — puis corrigez tout en un clic.",
+    "placeholder": "https://github.com/owner/repo",
+    "cta": "Analyser le dépôt",
+    "hint": "Fonctionne avec tout dépôt public — supporte les fichiers de langue JSON, YAML et .po"
+  },
+  "steps": {
+    "title": "Comment ça marche",
+    "paste": {
+      "title": "Collez une URL de dépôt",
+      "description": "Saisissez n’importe quel dépôt GitHub public. Nous détectons automatiquement les fichiers de langue dans les dossiers courants comme locales/, i18n/, public/locales/."
+    },
+    "report": {
+      "title": "Obtenez un rapport de santé",
+      "description": "Consultez la couverture par langue, les clés manquantes, les chaînes non traduites et les clés orphelines — le tout sur un tableau de bord visuel."
+    },
+    "fix": {
+      "title": "Corrigez en un clic",
+      "description": "Lingo.dev traduit instantanément toutes les chaînes manquantes. Téléchargez les fichiers corrigés ou ouvrez une PR directement."
+    }
+  },
+  "footer": {
+    "copyright": "© {year} i18n.doctor — Analysez et corrigez les traductions défectueuses."
+  },
+  "notFound": {
+    "heading": "Vous êtes perdu ?",
+    "description": "Cette page n'existe pas. Reprenons l’analyse de dépôts.",
+    "cta": "Retour à i18n.doctor"
+  }
+}

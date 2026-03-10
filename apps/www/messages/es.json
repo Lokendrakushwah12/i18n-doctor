@@ -1,0 +1,37 @@
+{
+  "site": {
+    "title": "i18n.doctor",
+    "tagline": "Escanea y repara traducciones defectuosas"
+  },
+  "hero": {
+    "badge": "Escáner de salud de localización",
+    "heading": "Escanea y repara traducciones rotas en cualquier repositorio",
+    "description": "Pega la URL de un repositorio público de GitHub y recibe al instante un informe de salud de localización, claves faltantes, cadenas sin traducir y cobertura por cada idioma; luego, arregla todo con un solo clic.",
+    "placeholder": "https://github.com/owner/repo",
+    "cta": "Escanear repo",
+    "hint": "Funciona con cualquier repo público — compatible con archivos de idioma JSON, YAML y .po"
+  },
+  "steps": {
+    "title": "Cómo funciona",
+    "paste": {
+      "title": "Pega una URL de repo",
+      "description": "Ingresa cualquier repositorio público de GitHub. Detectamos automáticamente archivos de idioma en patrones como locales/, i18n/, public/locales/."
+    },
+    "report": {
+      "title": "Obtén un informe de salud",
+      "description": "Consulta la cobertura por idioma, claves faltantes, cadenas sin traducir y claves huérfanas — todo en un panel visual."
+    },
+    "fix": {
+      "title": "Repara con un solo clic",
+      "description": "Lingo.dev traduce de inmediato todas las cadenas faltantes. Descarga los archivos corregidos o abre un PR directamente."
+    }
+  },
+  "footer": {
+    "copyright": "© {year} i18n.doctor — Escanea y repara traducciones defectuosas."
+  },
+  "notFound": {
+    "heading": "¿Estás perdido?",
+    "description": "Esta página no existe. Vamos a devolverte para que sigas escaneando repos.",
+    "cta": "Volver a i18n.doctor"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "site": {
+    "title": "i18n.doctor",
+    "tagline": "Scan & Fix Broken Translations"
+  },
+  "hero": {
+    "badge": "Localization Health Scanner",
+    "heading": "Scan & fix broken translations in any repo",
+    "description": "Paste a public GitHub repo URL and instantly get a localization health report, missing keys, untranslated strings, and coverage per locale — then fix everything in one click.",
+    "placeholder": "https://github.com/owner/repo",
+    "cta": "Scan Repo",
+    "hint": "Works with any public repo — supports JSON, YAML, and .po locale files"
+  },
+  "steps": {
+    "title": "How it works",
+    "paste": {
+      "title": "Paste a repo URL",
+      "description": "Enter any public GitHub repo. We auto-detect locale files in common patterns like locales/, i18n/, public/locales/."
+    },
+    "report": {
+      "title": "Get a health report",
+      "description": "See per-locale coverage, missing keys, untranslated strings, and orphan keys — all in a visual dashboard."
+    },
+    "fix": {
+      "title": "Fix with one click",
+      "description": "Lingo.dev translates all missing strings instantly. Download the fixed files or open a PR directly."
+    }
+  },
+  "footer": {
+    "copyright": "© {year} i18n.doctor — Scan & fix broken translations."
+  },
+  "notFound": {
+    "heading": "Are you lost?",
+    "description": "This page doesn't exist. Let's get you back to scanning repos.",
+    "cta": "Back to i18n.doctor"
+  }
+}
