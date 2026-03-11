@@ -4,7 +4,16 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { Badge } from "@workspace/ui/ui/badge"
+import { Frame, FramePanel } from "@workspace/ui/ui/frame"
 import { Progress } from "@workspace/ui/ui/progress"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@workspace/ui/ui/table"
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid"
 
 interface LeaderboardEntry {
@@ -40,9 +49,13 @@ export default function LeaderboardPage() {
 
   useEffect(() => {
     async function load() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { setLoading(false); return }
+
       const { data } = await supabase
         .from("reports")
         .select("repo_owner, repo_name, repo_url, report, created_at")
+        .eq("user_id", user.id)
         .order("created_at", { ascending: false })
 
       if (data) {
@@ -102,57 +115,67 @@ export default function LeaderboardPage() {
       )}
 
       {entries.length > 0 && (
-        <div className="border border-border rounded-lg overflow-hidden">
-          <div className="grid grid-cols-[2rem_1fr_5rem_4rem_8rem] sm:grid-cols-[2rem_1fr_5rem_4.5rem_10rem] gap-3 px-4 py-2.5 bg-muted/50 text-xs font-mono text-muted-foreground border-b border-border">
-            <span>#</span>
-            <span>Repository</span>
-            <span className="text-right">Keys</span>
-            <span className="text-right">Locales</span>
-            <span>Coverage</span>
-          </div>
+        <Frame>
+          <FramePanel>
+            <Table className="rounded-xl overflow-hidden">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="font-mono text-xs w-10">#</TableHead>
+                  <TableHead className="font-mono text-xs">Repository</TableHead>
+                  <TableHead className="font-mono text-xs text-right">Keys</TableHead>
+                  <TableHead className="font-mono text-xs text-right">Locales</TableHead>
+                  <TableHead className="font-mono text-xs">Coverage</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="before:rounded-t-none!">
+                {entries.map((entry, i) => {
+                  const cov = entry.report.summary.avgCoverage
+                  const color =
+                    cov >= 90 ? "bg-success" : cov >= 60 ? "bg-warning" : "bg-destructive"
 
-          {entries.map((entry, i) => {
-            const cov = entry.report.summary.avgCoverage
-            const color =
-              cov >= 90 ? "bg-success" : cov >= 60 ? "bg-warning" : "bg-destructive"
-
-            return (
-              <Link
-                key={`${entry.repo_owner}/${entry.repo_name}`}
-                href={`/${entry.repo_owner}/${entry.repo_name}`}
-                className="grid grid-cols-[2rem_1fr_5rem_4rem_8rem] sm:grid-cols-[2rem_1fr_5rem_4.5rem_10rem] gap-3 px-4 py-3 text-sm font-mono items-center border-b border-border last:border-b-0 hover:bg-accent/50 transition-colors"
-              >
-                <span className="text-muted-foreground text-xs">{i + 1}</span>
-                <span className="flex items-center gap-2 min-w-0">
-                  <span className="truncate font-medium">
-                    {entry.repo_owner}/{entry.repo_name}
-                  </span>
-                </span>
-                <span className="text-right tabular-nums text-muted-foreground">
-                  {entry.report.totalSourceKeys.toLocaleString()}
-                </span>
-                <span className="text-right tabular-nums text-muted-foreground">
-                  {entry.report.summary.totalLocales}
-                </span>
-                <div className="flex items-center gap-2">
-                  <Progress
-                    variant="lines"
-                    value={cov}
-                    filledColor={color}
-                    className="h-5 flex-1"
-                  />
-                  <Badge
-                    variant={cov >= 90 ? "success" : cov >= 60 ? "warning" : "error"}
-                    size="sm"
-                    className="text-[10px] w-12 justify-center"
-                  >
-                    {cov}%
-                  </Badge>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
+                  return (
+                    <TableRow key={`${entry.repo_owner}/${entry.repo_name}`} className="group">
+                      <TableCell className="font-mono text-xs text-muted-foreground rounded-t-none!">
+                        {i + 1}
+                      </TableCell>
+                      <TableCell className="font-mono text-sm">
+                        <Link
+                          href={`/${entry.repo_owner}/${entry.repo_name}`}
+                          className="font-medium hover:underline"
+                        >
+                          {entry.repo_owner}/{entry.repo_name}
+                        </Link>
+                      </TableCell>
+                      <TableCell className="font-mono text-sm tabular-nums text-right text-muted-foreground">
+                        {entry.report.totalSourceKeys.toLocaleString()}
+                      </TableCell>
+                      <TableCell className="font-mono text-sm tabular-nums text-right text-muted-foreground">
+                        {entry.report.summary.totalLocales}
+                      </TableCell>
+                      <TableCell className="rounded-tr-none!">
+                        <div className="flex items-center gap-2">
+                          <Progress
+                            variant="lines"
+                            value={cov}
+                            filledColor={color}
+                            className="h-5 flex-1"
+                          />
+                          <Badge
+                            variant={cov >= 90 ? "success" : cov >= 60 ? "warning" : "error"}
+                            size="sm"
+                            className="text-[10px] w-12 justify-center"
+                          >
+                            {cov}%
+                          </Badge>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </FramePanel>
+        </Frame>
       )}
 
       {entries.length > 0 && (

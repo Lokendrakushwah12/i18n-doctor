@@ -90,7 +90,7 @@ export default function DashboardPage() {
       ) : (
         <div className="grid gap-4">
           {reports.map((report) => (
-            <Link key={report.id} href={`/report?repo=${encodeURIComponent(report.repo_url)}`}>
+            <Link key={report.id} href={`/report/${report.id}`}>
               <Card className="gap-2 py-4 px-4 hover:bg-accent/50 transition-colors cursor-pointer">
                 <CardHeader className="p-0">
                   <div className="flex items-center justify-between">

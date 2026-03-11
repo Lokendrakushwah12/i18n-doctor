@@ -1,8 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/client"
+import { useRecentPublicReports } from "@/hooks/use-reports"
 import { Badge } from "@workspace/ui/ui/badge"
 import { Frame, FramePanel } from "@workspace/ui/ui/frame"
 import { Progress } from "@workspace/ui/ui/progress"
@@ -15,51 +14,8 @@ import {
   TableRow,
 } from "@workspace/ui/ui/table"
 
-interface RecentReport {
-  id: string
-  repo_owner: string
-  repo_name: string
-  report: {
-    totalSourceKeys: number
-    summary: {
-      avgCoverage: number
-      totalLocales: number
-    }
-  }
-  created_at: string
-}
-
 export function RecentScans() {
-  const [reports, setReports] = useState<RecentReport[]>([])
-  const [loading, setLoading] = useState(true)
-  const supabase = createClient()
-
-  useEffect(() => {
-    async function load() {
-      const { data } = await supabase
-        .from("reports")
-        .select("id, repo_owner, repo_name, report, created_at")
-        .order("created_at", { ascending: false })
-        .limit(20)
-
-      if (data) {
-        // Deduplicate by repo
-        const seen = new Set<string>()
-        const unique: RecentReport[] = []
-        for (const row of data) {
-          const key = `${row.repo_owner}/${row.repo_name}`.toLowerCase()
-          if (!seen.has(key)) {
-            seen.add(key)
-            unique.push(row)
-          }
-        }
-        setReports(unique.slice(0, 10))
-      }
-      setLoading(false)
-    }
-
-    load()
-  }, [supabase])
+  const { data: reports, loading } = useRecentPublicReports()
 
   if (loading || reports.length === 0) return null
 

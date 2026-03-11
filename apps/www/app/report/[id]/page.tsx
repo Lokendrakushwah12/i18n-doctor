@@ -20,7 +20,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@work
 import { Progress } from "@workspace/ui/ui/progress"
 import { ScrollArea } from "@workspace/ui/ui/scroll-area"
 import { Separator } from "@workspace/ui/ui/separator"
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 import type { ComponentType, SVGProps } from "react"
 import { useEffect, useState } from "react"
 
@@ -124,6 +124,7 @@ function ShareButton() {
 }
 
 export default function SavedReportPage({ params }: { params: Promise<{ id: string }> }) {
+  const router = useRouter()
   const [data, setData] = useState<SavedReport | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -210,7 +211,9 @@ export default function SavedReportPage({ params }: { params: Promise<{ id: stri
         <main className="z-40 mx-auto flex w-full max-w-6xl min-h-screen flex-1 flex-col items-center justify-center border-x border-border/50 bg-sidebar">
           <div className="flex flex-col items-center gap-4 py-24 text-center px-4">
             <p className="text-destructive font-mono text-sm">{error}</p>
-            <Button variant="outline" size="sm" render={<Link href="/"><ArrowLeftIcon className="size-4" />Back to home</Link>} />
+            <Button variant="outline" size="sm" onClick={() => router.back()}>
+              <ArrowLeftIcon className="size-4" />Back
+            </Button>
           </div>
         </main>
       </>
@@ -230,7 +233,7 @@ export default function SavedReportPage({ params }: { params: Promise<{ id: stri
             {/* Repo Header */}
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-1">
-                <Button variant="ghost" size="icon-sm" render={<Link href="/" aria-label="Back"><ArrowLeftIcon className="size-4" /></Link>} />
+                <Button variant="ghost" size="icon-sm" aria-label="Back" onClick={() => router.back()}><ArrowLeftIcon className="size-4" /></Button>
                 <h1 className="font-heading text-2xl sm:text-3xl flex-1">
                   {data.repo_owner}/{data.repo_name}
                 </h1>
