@@ -16,6 +16,7 @@ import { Separator } from "@workspace/ui/ui/separator";
 import type { Metadata } from "next";
 import type { ComponentType, SVGProps } from "react";
 import { AuthButton } from "@/components/auth-button";
+import { RecentScans } from "@/components/recent-scans";
 import { ScanForm } from "@/components/scan-form";
 
 type Icon = ComponentType<SVGProps<SVGSVGElement>>;
@@ -99,6 +100,10 @@ export default function Page() {
             </div>
           </div>
         </div>
+
+        <Separator />
+
+        <RecentScans />
       </main>
       <SiteFooter />
     </>

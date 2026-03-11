@@ -27,3 +27,7 @@ create policy "Public reports are viewable by anyone"
 -- Anyone (including anon) can insert
 create policy "Anyone can create a report"
   on reports for insert with check (true);
+
+-- Anyone can update reports (for re-scanning the same repo)
+create policy "Anyone can update a report"
+  on reports for update using (true) with check (true);

@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server"
+import { createServerClient } from "@supabase/ssr"
 import { parseRepoUrl, getRepoInfo, getRepoTree, getFileContent } from "@/lib/github"
 import { detectLocaleFiles, guessSourceLocale } from "@/lib/locale-detector"
 import { parseLocaleFile, type KeyMap } from "@/lib/locale-parser"
@@ -88,7 +89,68 @@ export async function POST(req: NextRequest) {
         send("step", { step: 4 })
         const report: ScanReport = generateReport(sourceLocale, keyMaps)
 
+        // 7. Save report to Supabase
+        let reportId: string | undefined
+        try {
+          const supabase = createServerClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            {
+              cookies: {
+                getAll() {
+                  return req.cookies.getAll()
+                },
+                setAll() {
+                  // no-op in streaming response
+                },
+              },
+            }
+          )
+          const { data: { user } } = await supabase.auth.getUser()
+
+          // Check if a report for this repo already exists — update instead of duplicating
+          const { data: existing } = await supabase
+            .from("reports")
+            .select("id")
+            .eq("repo_owner", owner)
+            .eq("repo_name", repo)
+            .order("created_at", { ascending: false })
+            .limit(1)
+            .single()
+
+          const reportPayload = {
+            repo_url: `https://github.com/${owner}/${repo}`,
+            repo_owner: owner,
+            repo_name: repo,
+            report: {
+              ...report,
+              repoInfo: { branch, description: repoInfo.description, stars: repoInfo.stars },
+              localeGroup: { basePath: group!.basePath, style: group!.style, locales: Object.keys(group!.files ?? {}) },
+            },
+            user_id: user?.id ?? null,
+          }
+
+          if (existing) {
+            // Update existing report with fresh scan data
+            await supabase
+              .from("reports")
+              .update({ report: reportPayload.report, user_id: reportPayload.user_id })
+              .eq("id", existing.id)
+            reportId = existing.id
+          } else {
+            const { data: inserted } = await supabase
+              .from("reports")
+              .insert(reportPayload)
+              .select("id")
+              .single()
+            reportId = inserted?.id
+          }
+        } catch (err) {
+          console.warn("Failed to save report to Supabase:", err)
+        }
+
         send("result", {
+          reportId,
           repo: {
             owner,
             repo,

@@ -11,6 +11,7 @@ import {
   EyeIcon,
   EyeSlashIcon,
   KeyIcon,
+  LinkIcon,
 } from "@heroicons/react/20/solid"
 import { SiteHeader } from "@workspace/ui/components/site-header"
 import { Badge } from "@workspace/ui/ui/badge"
@@ -22,9 +23,10 @@ import { Separator } from "@workspace/ui/ui/separator"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import type { ComponentType, SVGProps } from "react"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 
 interface ScanResponse {
+  reportId?: string
   repo: {
     owner: string
     repo: string
@@ -143,6 +145,25 @@ function StatCard({ value, label, icon: Icon }: {
   )
 }
 
+function ShareButton() {
+  const [copied, setCopied] = useState(false)
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      className="font-mono text-xs"
+      onClick={() => {
+        navigator.clipboard.writeText(window.location.href)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      }}
+    >
+      <LinkIcon className="size-3.5" />
+      {copied ? "Copied!" : "Share"}
+    </Button>
+  )
+}
+
 function RepoHeader({ repo, localeGroup, sourceLocale }: {
   repo: ScanResponse["repo"]
   localeGroup: ScanResponse["localeGroup"]
@@ -156,9 +177,10 @@ function RepoHeader({ repo, localeGroup, sourceLocale }: {
           size="icon-sm"
           render={<Link href="/" aria-label="Back"><ArrowLeftIcon className="size-4" /></Link>}
         />
-        <h1 className="font-heading text-2xl sm:text-3xl">
+        <h1 className="font-heading text-2xl sm:text-3xl flex-1">
           {repo.owner}/{repo.repo}
         </h1>
+        <ShareButton />
       </div>
       {repo.description && (
         <p className="text-muted-foreground text-sm ml-9">{repo.description}</p>
@@ -199,13 +221,15 @@ function ErrorState({ message }: { message: string }) {
 function ReportContent() {
   const searchParams = useSearchParams()
   const repoUrl = searchParams.get("repo")
+  const repoRef = useRef(repoUrl)
   const [data, setData] = useState<ScanResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [completedSteps, setCompletedSteps] = useState(-1)
 
   useEffect(() => {
-    if (!repoUrl) {
+    const repo = repoRef.current
+    if (!repo) {
       setError("No repo URL provided")
       setLoading(false)
       return
@@ -218,7 +242,7 @@ function ReportContent() {
         const res = await fetch("/api/scan", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ repo: repoUrl }),
+          body: JSON.stringify({ repo }),
         })
 
         const reader = res.body?.getReader()
@@ -248,6 +272,9 @@ function ReportContent() {
             } else if (event === "result") {
               gotResult = true
               setData(payload)
+              if (payload.reportId) {
+                window.history.replaceState(null, "", `/report/${payload.reportId}`)
+              }
               setLoading(false)
             } else if (event === "error") {
               gotResult = true
@@ -277,9 +304,10 @@ function ReportContent() {
     }
 
     scan()
-  }, [repoUrl])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  if (loading) return <ScanningState repo={repoUrl ?? undefined} completedSteps={completedSteps} />
+  if (loading) return <ScanningState repo={repoRef.current ?? undefined} completedSteps={completedSteps} />
   if (error) return <ErrorState message={error} />
   if (!data) return null
 
