@@ -1,23 +1,14 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Image from "next/image"
-import { createClient } from "@/lib/supabase/client"
+import { useCurrentUser } from "@/hooks/use-reports"
 import { Card } from "@workspace/ui/ui/card"
 import { Separator } from "@workspace/ui/ui/separator"
-import type { User } from "@supabase/supabase-js"
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<User | null>(null)
-  const supabase = createClient()
+  const { user, loading } = useCurrentUser()
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) setUser(data.user)
-    })
-  }, [supabase])
-
-  if (!user) {
+  if (loading || !user) {
     return (
       <div className="flex items-center justify-center py-24">
         <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />

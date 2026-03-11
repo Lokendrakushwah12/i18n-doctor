@@ -93,6 +93,13 @@ export async function getCurrentUserId() {
   return user?.id ?? null
 }
 
+/** Get the full current user object */
+export async function getCurrentUser() {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  return user
+}
+
 // ─── Helpers ─────────────────────────────────────────────────────────────
 
 function deduplicateByRepo<T extends { repo_owner: string; repo_name: string }>(rows: T[]): T[] {

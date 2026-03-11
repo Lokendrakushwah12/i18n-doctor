@@ -2,6 +2,7 @@ import "./globals.css"
 
 import type { Metadata } from "next"
 import { Fustat as FontHeading, Fustat as FontSans, Geist_Mono as FontMono } from "next/font/google"
+import { QueryProvider } from "@/components/query-provider"
 import { ThemeProvider } from "@workspace/ui/components/theme-provider"
 
 
@@ -115,11 +116,13 @@ export default function RootLayout({
       <body
         className={`${fontSans.variable} ${fontHeading.variable} ${fontMono.variable} bg-sidebar font-sans text-foreground antialiased`}
       >
-        <ThemeProvider>
-          <div className="relative flex min-h-svh flex-col [--header-height:4rem] before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-sidebar overflow-clip">
-            {children}
-          </div>
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider>
+            <div className="relative flex min-h-svh flex-col [--header-height:4rem] before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-sidebar overflow-clip">
+              {children}
+            </div>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   )
