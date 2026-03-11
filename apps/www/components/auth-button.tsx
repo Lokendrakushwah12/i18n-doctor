@@ -70,7 +70,7 @@ export function AuthButton() {
             alt={user.user_metadata.user_name ?? "avatar"}
             width={28}
             height={28}
-            className="size-7 rounded-full ml-4"
+            className="size-7 rounded-sm ml-1.5"
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" sideOffset={8}>

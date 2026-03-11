@@ -22,6 +22,7 @@ import { Progress } from "@workspace/ui/ui/progress"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@workspace/ui/ui/card"
 import { Separator } from "@workspace/ui/ui/separator"
 import { ScrollArea } from "@workspace/ui/ui/scroll-area"
+import { ScanningState } from "@/components/scanning-state"
 import type { ScanReport, LocaleHealth } from "@/lib/diff-engine"
 
 interface ScanResponse {
@@ -38,17 +39,6 @@ interface ScanResponse {
     locales: string[]
   }
   report: ScanReport
-}
-
-function Spinner({ label }: { label?: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center gap-4 py-24">
-      <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />
-      {label && (
-        <p className="font-mono text-sm text-muted-foreground">{label}</p>
-      )}
-    </div>
-  )
 }
 
 function CoverageBar({ coverage }: { coverage: number }) {
@@ -245,7 +235,7 @@ function ReportContent() {
     scan()
   }, [repoUrl])
 
-  if (loading) return <Spinner label="Scanning repository…" />
+  if (loading) return <ScanningState repo={repoUrl ?? undefined} />
   if (error) return <ErrorState message={error} />
   if (!data) return null
 
@@ -291,7 +281,7 @@ export default function ReportPage() {
     <>
       <SiteHeader><AuthButton /></SiteHeader>
       <main className="z-40 mx-auto flex w-full max-w-6xl min-h-screen flex-1 flex-col items-center justify-start border-x border-border/50 bg-sidebar">
-        <Suspense fallback={<Spinner />}>
+        <Suspense fallback={<ScanningState />}>
           <ReportContent />
         </Suspense>
       </main>

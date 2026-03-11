@@ -13,33 +13,8 @@ import { SiteFooter } from "@workspace/ui/components/site-footer"
 import { Button } from "@workspace/ui/ui/button"
 import { Card } from "@workspace/ui/ui/card"
 import { AuthButton } from "@/components/auth-button"
-
-const STEPS = [
-  "Fetching repository info…",
-  "Building file tree…",
-  "Detecting locale files…",
-  "Parsing translations…",
-  "Comparing locales…",
-]
-
-function ScanLoader() {
-  return (
-    <div className="w-full flex flex-col items-center gap-6 mt-4">
-      <div className="size-6 animate-spin rounded-full border-2 border-muted border-t-foreground" />
-      <div className="space-y-2.5 w-full">
-        {STEPS.map((step) => (
-          <div
-            key={step}
-            className="s-full flex items-center gap-3 rounded-lg bg-muted/50 px-4 py-2.5 text-sm text-muted-foreground animate-pulse"
-          >
-            <div className="size-4 rounded-full border border-muted-foreground/30" />
-            {step}
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
+import { ScanningState } from "@/components/scanning-state"
+import { Loader } from "lucide-react"
 
 export default function ScanConfirmPage({
   params,
@@ -70,13 +45,7 @@ export default function ScanConfirmPage({
       <main className="z-40 mx-auto flex w-full max-w-6xl min-h-screen flex-1 flex-col items-center justify-center border-x border-border/50 bg-sidebar px-4">
         <Card className="w-full max-w-md items-center gap-0 p-8">
           {scanning ? (
-            <>
-              <h2 className="font-heading text-xl text-center mb-1">Scanning repository</h2>
-              <p className="text-sm text-muted-foreground text-center font-mono mb-2">
-                {fullName}
-              </p>
-              <ScanLoader />
-            </>
+            <Loader className="size-6" />
           ) : (
             <>
               <Image
