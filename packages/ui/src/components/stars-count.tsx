@@ -8,14 +8,14 @@ export function StarsCount() {
   useEffect(() => {
     let cancelled = false
 
-    fetch("https://api.github.com/repos/lokendrakushwah12/i18n-doctor")
+    fetch("/api/github/stars")
       .then((res) => {
         if (!res.ok) throw new Error("fetch failed")
         return res.json()
       })
       .then((json) => {
-        if (!cancelled && typeof json.stargazers_count === "number") {
-          setStars(json.stargazers_count)
+        if (!cancelled && typeof json.stars === "number") {
+          setStars(json.stars)
         }
       })
       .catch(() => {})

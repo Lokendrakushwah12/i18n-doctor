@@ -1,29 +1,28 @@
 "use client"
 
-import { useSearchParams } from "next/navigation"
-import { useEffect, useState, Suspense } from "react"
-import Link from "next/link"
+import { AuthButton } from "@/components/auth-button"
+import { ScanningState } from "@/components/scanning-state"
+import type { LocaleHealth, ScanReport } from "@/lib/diff-engine"
 import {
+  ArchiveBoxXMarkIcon,
   ArrowLeftIcon,
-  KeyIcon,
   ChartBarIcon,
   ExclamationTriangleIcon,
-  ArchiveBoxXMarkIcon,
   EyeIcon,
   EyeSlashIcon,
+  KeyIcon,
 } from "@heroicons/react/20/solid"
-import type { ComponentType, SVGProps } from "react"
 import { SiteHeader } from "@workspace/ui/components/site-header"
-import { AuthButton } from "@/components/auth-button"
-import { SiteFooter } from "@workspace/ui/components/site-footer"
-import { Button } from "@workspace/ui/ui/button"
 import { Badge } from "@workspace/ui/ui/badge"
+import { Button } from "@workspace/ui/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/ui/card"
 import { Progress } from "@workspace/ui/ui/progress"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@workspace/ui/ui/card"
-import { Separator } from "@workspace/ui/ui/separator"
 import { ScrollArea } from "@workspace/ui/ui/scroll-area"
-import { ScanningState } from "@/components/scanning-state"
-import type { ScanReport, LocaleHealth } from "@/lib/diff-engine"
+import { Separator } from "@workspace/ui/ui/separator"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
+import type { ComponentType, SVGProps } from "react"
+import { Suspense, useEffect, useState } from "react"
 
 interface ScanResponse {
   repo: {
@@ -137,8 +136,8 @@ function StatCard({ value, label, icon: Icon }: {
 }) {
   return (
     <Card className="gap-1 py-4 px-4">
-      <Icon className="size-4 text-muted-foreground mb-1" />
-      <p className="text-2xl font-heading">{value}</p>
+      <Icon className="size-5.5 rounded-sm text-sky-500 bg-sky-500/20 p-1 mb-1" />
+      <p className="text-2xl font-bold font-heading">{value}</p>
       <p className="text-xs text-muted-foreground font-mono">{label}</p>
     </Card>
   )
@@ -203,6 +202,7 @@ function ReportContent() {
   const [data, setData] = useState<ScanResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [completedSteps, setCompletedSteps] = useState(-1)
 
   useEffect(() => {
     if (!repoUrl) {
@@ -212,21 +212,65 @@ function ReportContent() {
     }
 
     async function scan() {
+      let gotResult = false
+
       try {
         const res = await fetch("/api/scan", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ repo: repoUrl }),
         })
-        const json = await res.json()
-        if (!res.ok) {
-          setError(json.error || "Scan failed")
-          if (json.hint) setError((prev) => `${prev}. ${json.hint}`)
-        } else {
-          setData(json)
+
+        const reader = res.body?.getReader()
+        if (!reader) {
+          setError("Failed to read response stream")
+          setLoading(false)
+          return
+        }
+
+        const decoder = new TextDecoder()
+        let buffer = ""
+
+        function processBuffer() {
+          const parts = buffer.split("\n\n")
+          buffer = parts.pop() ?? ""
+
+          for (const part of parts) {
+            const eventMatch = part.match(/^event: (.+)$/m)
+            const dataMatch = part.match(/^data: (.+)$/m)
+            if (!eventMatch || !dataMatch) continue
+
+            const event = eventMatch[1]
+            const payload = JSON.parse(dataMatch[1]!)
+
+            if (event === "step") {
+              setCompletedSteps(payload.step)
+            } else if (event === "result") {
+              gotResult = true
+              setData(payload)
+              setLoading(false)
+            } else if (event === "error") {
+              gotResult = true
+              setError(payload.error)
+              if (payload.hint) setError((prev) => `${prev}. ${payload.hint}`)
+              setLoading(false)
+            }
+          }
+        }
+
+        try {
+          while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+            buffer += decoder.decode(value, { stream: true })
+            processBuffer()
+          }
+        } catch {
+          // Stream may close abruptly after all data is sent — process remaining buffer
+          if (buffer.trim()) processBuffer()
         }
       } catch {
-        setError("Network error. Please try again.")
+        if (!gotResult) setError("Network error. Please try again.")
       } finally {
         setLoading(false)
       }
@@ -235,7 +279,7 @@ function ReportContent() {
     scan()
   }, [repoUrl])
 
-  if (loading) return <ScanningState repo={repoUrl ?? undefined} />
+  if (loading) return <ScanningState repo={repoUrl ?? undefined} completedSteps={completedSteps} />
   if (error) return <ErrorState message={error} />
   if (!data) return null
 
@@ -285,7 +329,6 @@ export default function ReportPage() {
           <ReportContent />
         </Suspense>
       </main>
-      <SiteFooter />
     </>
   )
 }

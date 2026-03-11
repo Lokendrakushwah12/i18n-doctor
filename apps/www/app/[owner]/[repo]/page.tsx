@@ -1,20 +1,18 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
+import { AuthButton } from "@/components/auth-button"
 import {
   ArrowLeftIcon,
   GlobeAmericasIcon,
 } from "@heroicons/react/20/solid"
-import Image from "next/image"
 import { SiteHeader } from "@workspace/ui/components/site-header"
-import { SiteFooter } from "@workspace/ui/components/site-footer"
 import { Button } from "@workspace/ui/ui/button"
 import { Card } from "@workspace/ui/ui/card"
-import { AuthButton } from "@/components/auth-button"
-import { ScanningState } from "@/components/scanning-state"
 import { Loader } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function ScanConfirmPage({
   params,
@@ -42,7 +40,7 @@ export default function ScanConfirmPage({
   return (
     <>
       <SiteHeader><AuthButton /></SiteHeader>
-      <main className="z-40 mx-auto flex w-full max-w-6xl min-h-screen flex-1 flex-col items-center justify-center border-x border-border/50 bg-sidebar px-4">
+      <main className="z-40 mx-auto flex w-full max-w-6xl min-h-[calc(100vh-64px)] flex-1 flex-col items-center justify-center border-x border-border/50 bg-sidebar px-4">
         <Card className="w-full max-w-md items-center gap-0 p-8">
           {scanning ? (
             <Loader className="size-6" />
@@ -73,14 +71,14 @@ export default function ScanConfirmPage({
 
               <Button
                 size="sm"
-                className="w-full font-mono"
+                className="w-full"
                 onClick={handleScan}
               >
                 Start Scan
               </Button>
 
               <Button
-                variant="ghost"
+                variant="secondary"
                 size="sm"
                 className="mt-3 text-muted-foreground"
                 render={
@@ -94,7 +92,6 @@ export default function ScanConfirmPage({
           )}
         </Card>
       </main>
-      <SiteFooter />
     </>
   )
 }
