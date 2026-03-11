@@ -1,51 +1,14 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/client"
+import { useUserReports } from "@/hooks/use-reports"
 import { Card, CardHeader, CardTitle, CardDescription } from "@workspace/ui/ui/card"
 import { Badge } from "@workspace/ui/ui/badge"
 import { Button } from "@workspace/ui/ui/button"
 import { PlusIcon } from "@heroicons/react/20/solid"
 
-interface ReportRow {
-  id: string
-  repo_url: string
-  repo_owner: string
-  repo_name: string
-  report: {
-    summary: {
-      avgCoverage: number
-      totalMissing: number
-      totalLocales: number
-    }
-    totalSourceKeys: number
-  }
-  created_at: string
-}
-
 export default function DashboardPage() {
-  const [reports, setReports] = useState<ReportRow[]>([])
-  const [loading, setLoading] = useState(true)
-  const supabase = createClient()
-
-  useEffect(() => {
-    async function load() {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
-
-      const { data } = await supabase
-        .from("reports")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
-
-      if (data) setReports(data)
-      setLoading(false)
-    }
-
-    load()
-  }, [supabase])
+  const { data: reports, loading } = useUserReports()
 
   if (loading) {
     return (

@@ -1,8 +1,8 @@
 "use client"
 
 import { AuthButton } from "@/components/auth-button"
-import type { LocaleHealth, ScanReport } from "@/lib/diff-engine"
-import { createClient } from "@/lib/supabase/client"
+import { useReport } from "@/hooks/use-reports"
+import type { LocaleHealth } from "@/lib/diff-engine"
 import {
   ArchiveBoxXMarkIcon,
   ArrowLeftIcon,
@@ -23,18 +23,6 @@ import { Separator } from "@workspace/ui/ui/separator"
 import { useRouter } from "next/navigation"
 import type { ComponentType, SVGProps } from "react"
 import { useEffect, useState } from "react"
-
-interface SavedReport {
-  id: string
-  repo_owner: string
-  repo_name: string
-  repo_url: string
-  report: ScanReport & {
-    repoInfo: { branch: string; description: string | null; stars: number }
-    localeGroup: { basePath: string; style: string; locales: string[] }
-  }
-  created_at: string
-}
 
 function CoverageBar({ coverage }: { coverage: number }) {
   const color =
@@ -125,27 +113,13 @@ function ShareButton() {
 
 export default function SavedReportPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
-  const [data, setData] = useState<SavedReport | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [resolvedId, setResolvedId] = useState<string | undefined>()
 
   useEffect(() => {
-    params.then(async ({ id }) => {
-      const supabase = createClient()
-      const { data: row, error: err } = await supabase
-        .from("reports")
-        .select("*")
-        .eq("id", id)
-        .single()
-
-      if (err || !row) {
-        setError("Report not found")
-      } else {
-        setData(row)
-      }
-      setLoading(false)
-    })
+    params.then(({ id }) => setResolvedId(id))
   }, [params])
+
+  const { data, error, loading } = useReport(resolvedId)
 
   if (loading) {
     return (

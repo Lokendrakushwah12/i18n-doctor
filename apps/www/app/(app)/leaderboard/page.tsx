@@ -1,8 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/client"
+import { useUserLeaderboard } from "@/hooks/use-reports"
 import { Badge } from "@workspace/ui/ui/badge"
 import { Frame, FramePanel } from "@workspace/ui/ui/frame"
 import { Progress } from "@workspace/ui/ui/progress"
@@ -16,21 +15,6 @@ import {
 } from "@workspace/ui/ui/table"
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid"
 
-interface LeaderboardEntry {
-  repo_owner: string
-  repo_name: string
-  repo_url: string
-  report: {
-    totalSourceKeys: number
-    summary: {
-      avgCoverage: number
-      totalLocales: number
-      totalMissing: number
-    }
-  }
-  created_at: string
-}
-
 const BENCHMARK_REPOS = [
   { owner: "calcom", repo: "cal.com", url: "calcom/cal.com" },
   { owner: "outline", repo: "outline", url: "outline/outline" },
@@ -43,39 +27,7 @@ const BENCHMARK_REPOS = [
 ]
 
 export default function LeaderboardPage() {
-  const [entries, setEntries] = useState<LeaderboardEntry[]>([])
-  const [loading, setLoading] = useState(true)
-  const supabase = createClient()
-
-  useEffect(() => {
-    async function load() {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) { setLoading(false); return }
-
-      const { data } = await supabase
-        .from("reports")
-        .select("repo_owner, repo_name, repo_url, report, created_at")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
-
-      if (data) {
-        const seen = new Set<string>()
-        const unique: LeaderboardEntry[] = []
-        for (const row of data) {
-          const key = `${row.repo_owner}/${row.repo_name}`.toLowerCase()
-          if (!seen.has(key)) {
-            seen.add(key)
-            unique.push(row)
-          }
-        }
-        unique.sort((a, b) => b.report.summary.avgCoverage - a.report.summary.avgCoverage)
-        setEntries(unique)
-      }
-      setLoading(false)
-    }
-
-    load()
-  }, [supabase])
+  const { data: entries, loading } = useUserLeaderboard()
 
   if (loading) {
     return (
@@ -140,7 +92,7 @@ export default function LeaderboardPage() {
                       </TableCell>
                       <TableCell className="font-mono text-sm">
                         <Link
-                          href={`/${entry.repo_owner}/${entry.repo_name}`}
+                          href={`/report/${entry.id}`}
                           className="font-medium hover:underline"
                         >
                           {entry.repo_owner}/{entry.repo_name}
