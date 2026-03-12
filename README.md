@@ -118,6 +118,29 @@ The app runs at `http://localhost:3000`.
 - [x] Deploy to Vercel
 - [ ] Final README, demo video, hackathon submission
 
+## Technical Notes
+
+### Scan pipeline — SSE streaming
+`/api/scan` uses a `ReadableStream` to push Server-Sent Events to the client as each stage completes (parse URL → fetch tree → detect locale files → compute diff → save to DB). This lets the UI show a live step-by-step loading screen instead of waiting for a single slow response.
+
+### Fix pipeline — parallel chunked translation + SSE
+`/api/fix` collects all missing/untranslated keys, strips pure-interpolation tokens (e.g. `{{count}}`), then splits the remainder into chunks of 15. All chunks are translated **in parallel** via `Promise.all` against the Lingo.dev SDK, giving an ~N× speedup over a single sequential call (N = number of chunks). Progress events are streamed back over SSE so the UI shows real-time status ("Fetching source files…", "Translating… 15/73 keys") with a live progress bar.
+
+### Locale normalization — BCP-47
+Repos use mixed casing for locale codes (`pt-br`, `zh-hans`, `EN_US`). Lingo.dev requires strict BCP-47 (language lowercase, script TitleCase, region UPPERCASE). A `normalizeLocale()` helper in `lib/lingo.ts` handles this before every SDK call.
+
+### GitHub PR creation — fork-first flow
+When the authenticated user doesn't own the scanned repo, the PR flow forks it first (`POST /repos/:owner/:repo/forks`), polls until the fork is ready (up to 12 s with 2 s back-off), creates a branch `i18n-doctor/fix-{locale}-{timestamp}`, commits the fixed file, and opens a **draft PR** against the original repo. The user never has to touch Git.
+
+### Client-side data layer — React Query + localStorage + Supabase
+- **React Query** caches all server state (reports, user, leaderboard) in memory so navigating between pages doesn't re-fetch.
+- **Fix results** are persisted to `localStorage` keyed by `fix:{reportId}:{locale}` so they survive page refreshes.
+- **PR URLs** are persisted both in `localStorage` (`pr:{reportId}:{locale}`) for instant restore and in the Supabase `report` JSON column (`prLinks`) as the authoritative source of truth.
+- **GitHub `provider_token`** (ephemeral after Supabase OAuth) is captured in `onAuthStateChange` and stored in `localStorage` so the PR flow works after a page refresh.
+
+### 3-layer API architecture
+All data access follows `lib/api/` (pure async fetch functions) → `hooks/` (React Query `useQuery`/`useMutation` wrappers) → components (read from hook return values only). No raw Supabase/fetch calls in `.tsx` files.
+
 ## Socials
 
 - Twitter: [@lokendratwt](https://x.com/lokendratwt)
