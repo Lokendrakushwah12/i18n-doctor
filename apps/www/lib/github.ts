@@ -10,7 +10,6 @@ function headers(): HeadersInit {
   const h: HeadersInit = {
     Accept: "application/vnd.github.v3+json",
   }
-  console.log("GITHUB", process.env.GITHUB_TOKEN)
   if (process.env.GITHUB_TOKEN) {
     h.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`
   }

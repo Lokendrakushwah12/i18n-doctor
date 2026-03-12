@@ -26,7 +26,7 @@ const fontMono = FontMono({
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://i18n-doctor.vercel.app"
 
-const defaultTitle = "i18n.doctor — Scan & Fix Broken Translations"
+const defaultTitle = "i18n-doctor — Scan & Fix Broken Translations"
 const defaultDescription =
   "Paste any public GitHub repo URL and instantly get a localization health report — missing keys, untranslated strings, coverage per locale — then fix everything in one click with Lingo.dev."
 

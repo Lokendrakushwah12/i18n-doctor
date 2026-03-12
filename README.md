@@ -1,4 +1,4 @@
-# i18n.doctor
+# i18n-doctor
 
 Scan any public GitHub repo for broken, missing, or incomplete translations — and fix them in one click using Lingo.dev.
 
@@ -8,7 +8,7 @@ Scan any public GitHub repo for broken, missing, or incomplete translations — 
 
 Developers ship apps with broken i18n all the time - new UI strings go untranslated, some locales have 90% coverage while others sit at 40%, and unused keys pile up silently. Existing tools are CLI-only, require local setup, and don't fix anything automatically.
 
-**i18n.doctor** is a web dashboard where you paste a GitHub repo URL and instantly get:
+**i18n-doctor** is a web dashboard where you paste a GitHub repo URL and instantly get:
 
 1. A **Localization Health Report** — visual breakdown of coverage per locale
 2. A **list of issues** — missing keys, untranslated strings, orphan keys
@@ -108,8 +108,8 @@ The app runs at `http://localhost:3000`.
 - [x] Lingo.dev SDK integration for translating missing keys server-side
 - [x] "Fix with Lingo.dev" button on report page
 - [x] Download fixed locale files as JSON
-- [ ] Live diff preview (before/after)
-- [ ] Open a GitHub PR with fixes (uses GitHub OAuth token + `public_repo` scope)
+- [x] Live diff preview (before/after per key)
+- [x] Open a GitHub PR with fixes (uses GitHub OAuth token + `public_repo` scope)
 
 ### Polish & Ship
 - [ ] Responsive UI polish & loading states

@@ -99,18 +99,39 @@ export async function POST(req: NextRequest) {
   if (Object.keys(toTranslate).length === 0) {
     return NextResponse.json({
       translated: {},
+      sourceValues: {},
       mergedContent: JSON.stringify(unflattenKeys(targetKeyMap), null, 2),
       count: 0,
     })
   }
 
-  const translated = await translateMissingKeys(toTranslate, sourceLocale, targetLocale)
+  // Strip keys with complex interpolations that confuse translation APIs
+  // (e.g. i18next plurals with _one/_other suffixes, ICU datetime formats)
+  const safeToTranslate: Record<string, string> = {}
+  for (const [key, value] of Object.entries(toTranslate)) {
+    // Skip keys whose values are purely interpolation tokens with no translatable text
+    const strippedValue = value.replace(/\{\{[^}]+\}\}/g, "").trim()
+    if (strippedValue.length > 0) {
+      safeToTranslate[key] = value
+    }
+  }
+
+  let translated: Record<string, string> = {}
+  try {
+    if (Object.keys(safeToTranslate).length > 0) {
+      translated = await translateMissingKeys(safeToTranslate, sourceLocale, targetLocale)
+    }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Translation failed"
+    return NextResponse.json({ error: `Lingo.dev error: ${message}` }, { status: 502 })
+  }
 
   const merged = { ...targetKeyMap, ...translated }
   const mergedContent = JSON.stringify(unflattenKeys(merged), null, 2)
 
   return NextResponse.json({
     translated,
+    sourceValues: safeToTranslate,
     mergedContent,
     count: Object.keys(translated).length,
   })
