@@ -11,6 +11,7 @@ export interface ReportRow {
   report: ScanReport & {
     repoInfo: { branch: string; description: string | null; stars: number }
     localeGroup: { basePath: string; style: string; locales: string[] }
+    prLinks?: Record<string, string>
   }
   created_at: string
 }

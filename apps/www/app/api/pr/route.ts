@@ -129,6 +129,12 @@ export async function POST(req: NextRequest) {
       }),
     })
 
+    // Persist PR URL in the report so the client can restore it after refresh
+    const existingPrLinks: Record<string, string> = (row.report as { prLinks?: Record<string, string> }).prLinks ?? {}
+    await supabase.from("reports").update({
+      report: { ...row.report, prLinks: { ...existingPrLinks, [targetLocale]: pr.html_url } },
+    }).eq("id", reportId)
+
     return NextResponse.json({ prUrl: pr.html_url })
   } catch (e) {
     const message = e instanceof Error ? e.message : "Failed to create PR"

@@ -35,6 +35,13 @@ export function AuthButton() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null)
+        // provider_token is only present right after OAuth login — persist it
+        if (session?.provider_token) {
+          localStorage.setItem("gh_provider_token", session.provider_token)
+        }
+        if (!session) {
+          localStorage.removeItem("gh_provider_token")
+        }
       }
     )
 
