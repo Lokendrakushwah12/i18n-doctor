@@ -13,6 +13,7 @@ import {
   KeyIcon,
   LinkIcon,
 } from "@heroicons/react/20/solid"
+import { FixButton } from "@/components/fix-button"
 import { SiteHeader } from "@workspace/ui/components/site-header"
 import { Badge } from "@workspace/ui/ui/badge"
 import { Button } from "@workspace/ui/ui/button"
@@ -85,7 +86,7 @@ function KeyList({ label, keys, variant }: { label: string; keys: string[]; vari
   )
 }
 
-function LocaleCard({ locale }: { locale: LocaleHealth }) {
+function LocaleCard({ locale, reportId }: { locale: LocaleHealth; reportId?: string }) {
   const [expanded, setExpanded] = useState(false)
   const issues = locale.missingKeys.length + locale.untranslatedKeys.length + locale.orphanKeys.length
 
@@ -109,15 +110,18 @@ function LocaleCard({ locale }: { locale: LocaleHealth }) {
       </CardHeader>
       {issues > 0 && (
         <CardContent className="pt-0">
-          <Button
-            variant="secondary"
-            size="sm"
-            className="font-mono text-xs"
-            onClick={() => setExpanded(!expanded)}
-          >
-            {expanded ? <EyeSlashIcon className="size-3.5" /> : <EyeIcon className="size-3.5" />}
-            {expanded ? "Hide details" : "Show details"}
-          </Button>
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="font-mono text-xs"
+              onClick={() => setExpanded(!expanded)}
+            >
+              {expanded ? <EyeSlashIcon className="size-3.5" /> : <EyeIcon className="size-3.5" />}
+              {expanded ? "Hide details" : "Show details"}
+            </Button>
+            {reportId && <FixButton reportId={reportId} locale={locale} />}
+          </div>
           {expanded && (
             <div className="mt-3 space-y-3 text-xs font-mono">
               <KeyList label="Missing keys" keys={locale.missingKeys} variant="error" />
@@ -332,7 +336,7 @@ function ReportContent() {
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {report.locales.map((locale) => (
-            <LocaleCard key={locale.locale} locale={locale} />
+            <LocaleCard key={locale.locale} locale={locale} reportId={data.reportId} />
           ))}
         </div>
 

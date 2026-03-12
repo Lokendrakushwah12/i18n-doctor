@@ -6,7 +6,7 @@ Scan any public GitHub repo for broken, missing, or incomplete translations — 
 
 ## Overview
 
-Developers ship apps with broken i18n all the time — new UI strings go untranslated, some locales have 90% coverage while others sit at 40%, and unused keys pile up silently. Existing tools are CLI-only, require local setup, and don't fix anything automatically.
+Developers ship apps with broken i18n all the time - new UI strings go untranslated, some locales have 90% coverage while others sit at 40%, and unused keys pile up silently. Existing tools are CLI-only, require local setup, and don't fix anything automatically.
 
 **i18n.doctor** is a web dashboard where you paste a GitHub repo URL and instantly get:
 
@@ -101,14 +101,14 @@ The app runs at `http://localhost:3000`.
 - [x] Leaderboard page UI (benchmark dataset for i18n tooling)
 - [x] Store scan results in Supabase `reports` table
 - [x] Leaderboard data from Supabase (populates after reports are stored)
-- [ ] Recent scans list on home page (from DB)
+- [x] Recent scans list on home page (from DB)
 - [x] Shareable report URLs (`/report/[id]`)
 
 ### One-Click Fix
-- [ ] Lingo.dev SDK integration for translating missing keys server-side
-- [ ] "Fix with Lingo.dev" button on report page
+- [x] Lingo.dev SDK integration for translating missing keys server-side
+- [x] "Fix with Lingo.dev" button on report page
+- [x] Download fixed locale files as JSON
 - [ ] Live diff preview (before/after)
-- [ ] Download fixed locale files as ZIP
 - [ ] Open a GitHub PR with fixes (uses GitHub OAuth token + `public_repo` scope)
 
 ### Polish & Ship

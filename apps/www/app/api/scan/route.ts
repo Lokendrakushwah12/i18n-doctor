@@ -125,7 +125,7 @@ export async function POST(req: NextRequest) {
             report: {
               ...report,
               repoInfo: { branch, description: repoInfo.description, stars: repoInfo.stars },
-              localeGroup: { basePath: group!.basePath, style: group!.style, locales: Object.keys(group!.files ?? {}) },
+              localeGroup: { basePath: group!.basePath, style: group!.style, locales: Object.keys(group!.files ?? {}), files: group!.files },
             },
             user_id: user?.id ?? null,
           }
