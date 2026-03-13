@@ -26,8 +26,41 @@
       "description": "Lingo.dev übersetzt alle fehlenden Strings sofort. Laden Sie die korrigierten Dateien herunter oder öffnen Sie direkt einen PR."
     }
   },
+  "nav": {
+    "dashboard": "Dashboard",
+    "newScan": "Neuer Scan",
+    "leaderboard": "Rangliste",
+    "profile": "Profil",
+    "signIn": "Mit GitHub anmelden",
+    "signOut": "Abmelden",
+    "newReport": "Neuer Bericht"
+  },
+  "dashboard": {
+    "title": "Ihre Berichte",
+    "searchPlaceholder": "Repos suchen…",
+    "sortRecent": "Neueste",
+    "sortCoverageDesc": "Abdeckung ↓",
+    "sortCoverageAsc": "Abdeckung ↑",
+    "sortName": "Name A–Z",
+    "empty": "Noch keine Berichte. Scannen Sie ein Repo, um zu beginnen.",
+    "scanRepo": "Repo scannen",
+    "noMatch": "Kein Bericht passt zu \"{query}\"",
+    "keys": "Schlüssel",
+    "locales": "Sprachen",
+    "missing": "fehlend",
+    "coverage": "Abdeckung"
+  },
+  "newScan": {
+    "title": "Neuer Scan",
+    "description": "Fügen Sie eine öffentliche GitHub-Repo-URL ein, um Übersetzungsprobleme zu finden.",
+    "hint": "Unterstützt JSON-, YAML- und .po-Locale-Dateien"
+  },
+  "recentScans": {
+    "title": "Letzte Scans",
+    "description": "Sehen Sie, wie beliebte Open-Source-Projekte bei der i18n-Gesundheit abschneiden"
+  },
   "footer": {
-    "copyright": "© {year} i18n.doctor — Fehlerhafte Übersetzungen erkennen & beheben."
+    "copyright": "© {year} i18n.doctor-Fehlerhafte Übersetzungen erkennen & beheben."
   },
   "notFound": {
     "heading": "Verlaufen?",

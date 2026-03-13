@@ -1,6 +1,6 @@
 # i18n-doctor
 
-Scan any public GitHub repo for broken, missing, or incomplete translations — and fix them in one click using Lingo.dev.
+Scan any public GitHub repo for broken, missing, or incomplete translations-and fix them in one click using Lingo.dev.
 
 ---
 
@@ -10,21 +10,21 @@ Developers ship apps with broken i18n all the time - new UI strings go untransla
 
 **i18n-doctor** is a web dashboard where you paste a GitHub repo URL and instantly get:
 
-1. A **Localization Health Report** — visual breakdown of coverage per locale
-2. A **list of issues** — missing keys, untranslated strings, orphan keys
-3. A **one-click Fix** — uses Lingo.dev to fill all gaps and optionally opens a GitHub PR
+1. A **Localization Health Report**-visual breakdown of coverage per locale
+2. A **list of issues**-missing keys, untranslated strings, orphan keys
+3. A **one-click Fix**-uses Lingo.dev to fill all gaps and optionally opens a GitHub PR
 
 ## Features
 
-- **Repo Scanner** — auto-detects locale/translation files (JSON, YAML, `.po`) in common patterns like `locales/`, `i18n/`, `public/locales/`
-- **Health Dashboard** — per-locale coverage %, visual progress bars, summary cards (total keys, missing, untranslated, orphan)
-- **One-Click Fix** — translates all missing/empty strings via Lingo.dev SDK with parallel chunked translation, real-time progress, and live diff preview
-- **Draft PR** — creates a GitHub PR with the fixed translations (forks the repo if you don't own it)
-- **Download JSON** — export the merged locale file directly
-- **Shareable Reports** — every scan generates a unique URL with dynamic OG image for social sharing
-- **Leaderboard** — compare translation coverage across repos you've scanned
-- **GitHub OAuth** — sign in to access your dashboard, create PRs, and track scans
-- **Responsive UI** — mobile bottom nav, skeleton loading states, dark/light mode
+- **Repo Scanner**-auto-detects locale/translation files (JSON, YAML, `.po`) in common patterns like `locales/`, `i18n/`, `public/locales/`
+- **Health Dashboard**-per-locale coverage %, visual progress bars, summary cards (total keys, missing, untranslated, orphan)
+- **One-Click Fix**-translates all missing/empty strings via Lingo.dev SDK with parallel chunked translation, real-time progress, and live diff preview
+- **Draft PR**-creates a GitHub PR with the fixed translations (forks the repo if you don't own it)
+- **Download JSON**-export the merged locale file directly
+- **Shareable Reports**-every scan generates a unique URL with dynamic OG image for social sharing
+- **Leaderboard**-compare translation coverage across repos you've scanned
+- **GitHub OAuth**-sign in to access your dashboard, create PRs, and track scans
+- **Responsive UI**-mobile bottom nav, skeleton loading states, dark/light mode
 
 ## Tech Stack
 
@@ -39,19 +39,19 @@ Developers ship apps with broken i18n all the time - new UI strings go untransla
 
 ## Lingo.dev Integration
 
-- **Lingo.dev SDK** — runtime translation of missing keys
-- **Lingo.dev CLI** — server-side processing of locale file buckets
-- **Lingo.dev Compiler** — the app itself is multilingual (dogfooding)
-- **Lingo.dev CI/CD** — GitHub Action for auto-translation on push
+- **Lingo.dev SDK**-runtime translation of missing keys
+- **Lingo.dev CLI**-server-side processing of locale file buckets
+- **Lingo.dev Compiler**-the app itself is multilingual (dogfooding)
+- **Lingo.dev CI/CD**-GitHub Action for auto-translation on push
 
 ## Repository Layout
 
-- `apps/www/` — Next.js web app, API routes, and app-specific code
-- `apps/www/app/` — App Router pages and API routes
-- `apps/www/components/` — React components
-- `apps/www/lib/` — Utility helpers (GitHub API, locale parser, Lingo.dev wrapper)
-- `packages/ui/` — Shared UI primitives
-- `packages/typescript-config/`, `packages/eslint-config/` — Workspace configuration
+- `apps/www/`-Next.js web app, API routes, and app-specific code
+- `apps/www/app/`-App Router pages and API routes
+- `apps/www/components/`-React components
+- `apps/www/lib/`-Utility helpers (GitHub API, locale parser, Lingo.dev wrapper)
+- `packages/ui/`-Shared UI primitives
+- `packages/typescript-config/`, `packages/eslint-config/`-Workspace configuration
 
 ## Getting Started
 
@@ -118,27 +118,27 @@ The app runs at `http://localhost:3000`.
 - [x] Open a GitHub PR with fixes (uses GitHub OAuth token + `public_repo` scope)
 
 ### Polish & Ship
-- [x] Responsive UI — mobile bottom nav, skeleton loading states for all pages
-- [x] Dynamic OG image — per-report social share cards with coverage stats
-- [x] Error handling — rate limit messages with reset timer, repo not found hints, graceful stream errors
+- [x] Responsive UI-mobile bottom nav, skeleton loading states for all pages
+- [x] Dynamic OG image-per-report social share cards with coverage stats
+- [x] Error handling-rate limit messages with reset timer, repo not found hints, graceful stream errors
 - [x] Deploy to Vercel
 - [x] Final README & hackathon submission
 
 ## Technical Notes
 
-### Scan pipeline — SSE streaming
+### Scan pipeline-SSE streaming
 `/api/scan` uses a `ReadableStream` to push Server-Sent Events to the client as each stage completes (parse URL → fetch tree → detect locale files → compute diff → save to DB). This lets the UI show a live step-by-step loading screen instead of waiting for a single slow response.
 
-### Fix pipeline — parallel chunked translation + SSE
+### Fix pipeline-parallel chunked translation + SSE
 `/api/fix` collects all missing/untranslated keys, strips pure-interpolation tokens (e.g. `{{count}}`), then splits the remainder into chunks of 15. All chunks are translated **in parallel** via `Promise.all` against the Lingo.dev SDK, giving an ~N× speedup over a single sequential call (N = number of chunks). Progress events are streamed back over SSE so the UI shows real-time status ("Fetching source files…", "Translating… 15/73 keys") with a live progress bar.
 
-### Locale normalization — BCP-47
+### Locale normalization-BCP-47
 Repos use mixed casing for locale codes (`pt-br`, `zh-hans`, `EN_US`). Lingo.dev requires strict BCP-47 (language lowercase, script TitleCase, region UPPERCASE). A `normalizeLocale()` helper in `lib/lingo.ts` handles this before every SDK call.
 
-### GitHub PR creation — fork-first flow
+### GitHub PR creation-fork-first flow
 When the authenticated user doesn't own the scanned repo, the PR flow forks it first (`POST /repos/:owner/:repo/forks`), polls until the fork is ready (up to 12 s with 2 s back-off), creates a branch `i18n-doctor/fix-{locale}-{timestamp}`, commits the fixed file, and opens a **draft PR** against the original repo. The user never has to touch Git.
 
-### Client-side data layer — React Query + localStorage + Supabase
+### Client-side data layer-React Query + localStorage + Supabase
 - **React Query** caches all server state (reports, user, leaderboard) in memory so navigating between pages doesn't re-fetch.
 - **Fix results** are persisted to `localStorage` keyed by `fix:{reportId}:{locale}` so they survive page refreshes.
 - **PR URLs** are persisted both in `localStorage` (`pr:{reportId}:{locale}`) for instant restore and in the Supabase `report` JSON column (`prLinks`) as the authoritative source of truth.

@@ -36,7 +36,7 @@ export default async function OGImage({ params }: { params: Promise<{ id: string
             fontFamily: "sans-serif",
           }}
         >
-          i18n.doctor — Report not found
+          i18n.doctor-Report not found
         </div>
       ),
       size,

@@ -9,7 +9,7 @@
     "description": "Pega la URL de un repositorio público de GitHub y recibe al instante un informe de salud de localización, claves faltantes, cadenas sin traducir y cobertura por cada idioma; luego, arregla todo con un solo clic.",
     "placeholder": "https://github.com/owner/repo",
     "cta": "Escanear repo",
-    "hint": "Funciona con cualquier repo público — compatible con archivos de idioma JSON, YAML y .po"
+    "hint": "Funciona con cualquier repo público-compatible con archivos de idioma JSON, YAML y .po"
   },
   "steps": {
     "title": "Cómo funciona",
@@ -19,15 +19,48 @@
     },
     "report": {
       "title": "Obtén un informe de salud",
-      "description": "Consulta la cobertura por idioma, claves faltantes, cadenas sin traducir y claves huérfanas — todo en un panel visual."
+      "description": "Consulta la cobertura por idioma, claves faltantes, cadenas sin traducir y claves huérfanas-todo en un panel visual."
     },
     "fix": {
       "title": "Repara con un solo clic",
       "description": "Lingo.dev traduce de inmediato todas las cadenas faltantes. Descarga los archivos corregidos o abre un PR directamente."
     }
   },
+  "nav": {
+    "dashboard": "Panel",
+    "newScan": "Nuevo escaneo",
+    "leaderboard": "Tabla de posiciones",
+    "profile": "Perfil",
+    "signIn": "Iniciar sesión con GitHub",
+    "signOut": "Cerrar sesión",
+    "newReport": "Nuevo informe"
+  },
+  "dashboard": {
+    "title": "Tus informes",
+    "searchPlaceholder": "Buscar repos…",
+    "sortRecent": "Más reciente",
+    "sortCoverageDesc": "Cobertura ↓",
+    "sortCoverageAsc": "Cobertura ↑",
+    "sortName": "Nombre A–Z",
+    "empty": "Aún no hay informes. Escanea un repo para empezar.",
+    "scanRepo": "Escanear un repo",
+    "noMatch": "Ningún informe coincide con \"{query}\"",
+    "keys": "claves",
+    "locales": "idiomas",
+    "missing": "faltantes",
+    "coverage": "cobertura"
+  },
+  "newScan": {
+    "title": "Nuevo escaneo",
+    "description": "Pega la URL de un repositorio público de GitHub para buscar problemas de traducción.",
+    "hint": "Compatible con archivos de idioma JSON, YAML y .po"
+  },
+  "recentScans": {
+    "title": "Escaneos recientes",
+    "description": "Mira cómo se desempeñan los proyectos de código abierto en salud i18n"
+  },
   "footer": {
-    "copyright": "© {year} i18n.doctor — Escanea y repara traducciones defectuosas."
+    "copyright": "© {year} i18n.doctor-Escanea y repara traducciones defectuosas."
   },
   "notFound": {
     "heading": "¿Estás perdido?",

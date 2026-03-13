@@ -13,9 +13,11 @@ import {
   TableHeader,
   TableRow,
 } from "@workspace/ui/ui/table"
+import { useMessages } from "@/lib/i18n"
 
 export function RecentScans() {
   const { data: reports, loading } = useRecentPublicReports()
+  const { messages: msg } = useMessages()
 
   if (loading || reports.length === 0) return null
 
@@ -23,10 +25,10 @@ export function RecentScans() {
     <div className="w-full px-4 py-16 sm:py-24">
       <div className="mx-auto max-w-4xl">
         <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-center mb-2">
-          Recent Scans
+          {msg.recentScans.title}
         </h2>
         <p className="text-sm text-muted-foreground text-center mb-8">
-          See how popular open-source projects score on i18n health
+          {msg.recentScans.description}
         </p>
 
         <Frame>

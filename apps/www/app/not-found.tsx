@@ -9,6 +9,7 @@ import {
 } from "@workspace/ui/components/page-header"
 import { Button } from "@workspace/ui/ui/button"
 import { Logo } from "@workspace/ui/components/logo"
+import messages from "@/messages/en.json"
 
 export const metadata: Metadata = {
   title: "Page Not Found",
@@ -25,9 +26,9 @@ export default function NotFound() {
       <PageHeader>
         <Logo className="size-44" />
         <PageHeaderHeading className="lg:max-w-xl max-w-sm text-balance tracking-tight">
-          Are you lost?</PageHeaderHeading>
+          {messages.notFound.heading}</PageHeaderHeading>
         <PageHeaderDescription className="flex items-center gap-3 text-sm font-mono tracking-tight text-muted-foreground">
-          This page doesn't exist. Let's get you back to scanning repos.
+          {messages.notFound.description}
         </PageHeaderDescription>
         <div className="mt-4">
           <Button
@@ -39,7 +40,7 @@ export default function NotFound() {
                   className="-ms-1 opacity-60 transition-transform group-hover:-translate-x-0.5"
                   aria-hidden="true"
                 />
-                Back to i18n.doctor
+                {messages.notFound.cta}
               </Link>
             }
           />

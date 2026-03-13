@@ -311,7 +311,7 @@ function ReportContent() {
             processBuffer()
           }
         } catch {
-          // Stream may close abruptly after all data is sent — process remaining buffer
+          // Stream may close abruptly after all data is sent-process remaining buffer
           if (buffer.trim()) processBuffer()
         }
       } catch {
@@ -359,7 +359,7 @@ function ReportContent() {
 
         {report.locales.length === 0 && (
           <p className="text-muted-foreground font-mono text-sm text-center py-8">
-            Only the source locale ({report.sourceLocale}) was found — no target locales to compare.
+            Only the source locale ({report.sourceLocale}) was found-no target locales to compare.
           </p>
         )}
       </div>

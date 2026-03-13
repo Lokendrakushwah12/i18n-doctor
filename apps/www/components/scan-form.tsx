@@ -5,9 +5,11 @@ import { useState } from "react"
 import { ArrowRightIcon } from "@heroicons/react/20/solid"
 import { Button } from "@workspace/ui/ui/button"
 import { Input } from "@workspace/ui/ui/input"
+import { useMessages } from "@/lib/i18n"
 
 export function ScanForm() {
   const router = useRouter()
+  const { messages: m } = useMessages()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -38,7 +40,7 @@ export function ScanForm() {
         <Input
           type="url"
           name="repo"
-          placeholder="https://github.com/owner/repo"
+          placeholder={m.hero.placeholder}
           size="lg"
           className="font-mono flex-1"
           required
@@ -50,7 +52,7 @@ export function ScanForm() {
           className="shrink-0 w-full sm:w-auto"
           disabled={loading}
         >
-          {loading ? "Scanning…" : "Scan Repo"}
+          {loading ? "Scanning…" : m.hero.cta}
           {!loading && <ArrowRightIcon className="size-4" />}
         </Button>
       </form>

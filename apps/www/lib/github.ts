@@ -1,5 +1,5 @@
 /**
- * GitHub API helpers — fetch repo metadata and file tree for public repos.
+ * GitHub API helpers-fetch repo metadata and file tree for public repos.
  * Uses the GitHub REST API (no auth required for public repos, but a token
  * raises rate limits from 60 → 5 000 req/h).
  */
@@ -65,12 +65,12 @@ export async function getRepoInfo(
     headers: headers(),
   })
   if (!res.ok) {
-    if (res.status === 404) throw new Error("Repository not found — check the URL and make sure it's a public repo")
+    if (res.status === 404) throw new Error("Repository not found-check the URL and make sure it's a public repo")
     if (res.status === 403) {
       const resetHeader = res.headers.get("x-ratelimit-reset")
       const resetIn = resetHeader ? Math.max(0, Math.ceil((Number(resetHeader) * 1000 - Date.now()) / 60000)) : null
       throw new Error(
-        `GitHub API rate limit exceeded${resetIn ? ` — resets in ~${resetIn} min` : ""}. Try again later.`
+        `GitHub API rate limit exceeded${resetIn ? `-resets in ~${resetIn} min` : ""}. Try again later.`
       )
     }
     throw new Error(`GitHub API error: ${res.status}`)

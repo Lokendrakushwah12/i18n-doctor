@@ -247,7 +247,7 @@ export default function SavedReportPage({ params }: { params: Promise<{ id: stri
 
             {report.locales.length === 0 && (
               <p className="text-muted-foreground font-mono text-sm text-center py-8">
-                Only the source locale ({report.sourceLocale}) was found — no target locales to compare.
+                Only the source locale ({report.sourceLocale}) was found-no target locales to compare.
               </p>
             )}
           </div>

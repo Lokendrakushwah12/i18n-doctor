@@ -1,5 +1,5 @@
 /**
- * Locale parser — extracts a flat key→value map from JSON, YAML, or PO files.
+ * Locale parser-extracts a flat key→value map from JSON, YAML, or PO files.
  * Nested JSON keys are flattened with dots: { a: { b: "c" } } → { "a.b": "c" }
  */
 
@@ -42,7 +42,7 @@ function parseJson(content: string): KeyMap {
   return flattenJson(data)
 }
 
-// ─── YAML (lightweight — handles flat & one-level nested) ───────────────
+// ─── YAML (lightweight-handles flat & one-level nested) ───────────────
 
 function parseYaml(content: string): KeyMap {
   const result: KeyMap = {}

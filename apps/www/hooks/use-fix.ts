@@ -38,7 +38,7 @@ export function useCreatePR() {
     }) => {
       const supabase = createClient()
       const { data: { session } } = await supabase.auth.getSession()
-      // provider_token is ephemeral — falls back to localStorage copy saved at login
+      // provider_token is ephemeral-falls back to localStorage copy saved at login
       const githubToken = session?.provider_token ?? localStorage.getItem("gh_provider_token")
       if (!githubToken) throw new Error("Sign in with GitHub to open a PR")
       return createPR(reportId, targetLocale, mergedContent, githubToken)

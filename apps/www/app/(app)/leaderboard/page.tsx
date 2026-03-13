@@ -76,7 +76,7 @@ export default function LeaderboardPage() {
       <div className="mb-8">
         <h1 className="font-heading text-2xl sm:text-3xl">i18n Leaderboard</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          A benchmark dataset for i18n tooling — comparing translation coverage across popular open-source projects.
+          A benchmark dataset for i18n tooling - comparing translation coverage across popular open-source projects.
         </p>
       </div>
 

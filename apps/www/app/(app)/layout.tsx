@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { SiteHeader } from "@workspace/ui/components/site-header"
-import { SiteFooter } from "@workspace/ui/components/site-footer"
+import { LocalizedFooter } from "@/components/localized-footer"
 import { AuthButton } from "@/components/auth-button"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
@@ -15,16 +15,18 @@ import {
   TrophyIcon,
 } from "@heroicons/react/20/solid"
 import { cn } from "@workspace/ui/lib/utils"
+import { useMessages } from "@/lib/i18n"
 
 const mobileNavItems = [
-  { href: "/dashboard", label: "Reports", icon: ClipboardDocumentListIcon },
-  { href: "/new-scan", label: "Scan", icon: PlusIcon },
-  { href: "/leaderboard", label: "Board", icon: TrophyIcon },
-  { href: "/profile", label: "Profile", icon: UserCircleIcon },
+  { href: "/dashboard", icon: ClipboardDocumentListIcon, key: "dashboard" as const },
+  { href: "/new-scan", icon: PlusIcon, key: "newScan" as const },
+  { href: "/leaderboard", icon: TrophyIcon, key: "leaderboard" as const },
+  { href: "/profile", icon: UserCircleIcon, key: "profile" as const },
 ]
 
 function MobileBottomNav() {
   const pathname = usePathname()
+  const { messages: m } = useMessages()
   return (
     <nav className="fixed bottom-0 inset-x-0 z-50 border-t border-border/50 bg-sidebar/95 backdrop-blur-lg sm:hidden">
       <div className="flex items-center justify-around h-14">
@@ -40,7 +42,7 @@ function MobileBottomNav() {
               )}
             >
               <item.icon className="size-5" />
-              {item.label}
+              {m.nav[item.key]}
             </Link>
           )
         })}
@@ -73,7 +75,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <main className="z-40 mx-auto flex w-full max-w-6xl min-h-screen flex-1 flex-col items-center justify-center border-x border-border/50 bg-sidebar">
           <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />
         </main>
-        <SiteFooter />
+        <LocalizedFooter />
       </>
     )
   }
@@ -88,7 +90,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
       </main>
       <MobileBottomNav />
-      <SiteFooter />
+      <LocalizedFooter />
     </>
   )
 }

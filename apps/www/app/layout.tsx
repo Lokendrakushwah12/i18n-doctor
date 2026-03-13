@@ -3,6 +3,7 @@ import "./globals.css"
 import type { Metadata } from "next"
 import { Fustat as FontHeading, Fustat as FontSans, Geist_Mono as FontMono } from "next/font/google"
 import { QueryProvider } from "@/components/query-provider"
+import { I18nProvider } from "@/components/i18n-provider"
 import { ThemeProvider } from "@workspace/ui/components/theme-provider"
 import { ToastProvider } from "@workspace/ui/ui/toast"
 
@@ -27,9 +28,9 @@ const fontMono = FontMono({
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://i18n-doctor.vercel.app"
 
-const defaultTitle = "i18n-doctor — Scan & Fix Broken Translations"
+const defaultTitle = "i18n-doctor-Scan & Fix Broken Translations"
 const defaultDescription =
-  "Paste any public GitHub repo URL and instantly get a localization health report — missing keys, untranslated strings, coverage per locale — then fix everything in one click with Lingo.dev."
+  "Paste any public GitHub repo URL and instantly get a localization health report-missing keys, untranslated strings, coverage per locale-then fix everything in one click with Lingo.dev."
 
 const keywords = [
   "i18n",
@@ -75,7 +76,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "i18n.doctor — Scan & Fix Broken Translations",
+        alt: "i18n.doctor-Scan & Fix Broken Translations",
       },
     ],
   },
@@ -119,11 +120,13 @@ export default function RootLayout({
       >
         <QueryProvider>
           <ThemeProvider>
-            <ToastProvider>
-              <div className="relative flex min-h-svh flex-col [--header-height:4rem] before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-sidebar overflow-clip">
-                {children}
-              </div>
-            </ToastProvider>
+            <I18nProvider>
+              <ToastProvider>
+                <div className="relative flex min-h-svh flex-col [--header-height:4rem] before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-sidebar overflow-clip">
+                  {children}
+                </div>
+              </ToastProvider>
+            </I18nProvider>
           </ThemeProvider>
         </QueryProvider>
       </body>

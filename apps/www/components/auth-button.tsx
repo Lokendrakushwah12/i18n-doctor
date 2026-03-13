@@ -19,12 +19,14 @@ import {
   UserCircleIcon,
   ArrowRightStartOnRectangleIcon,
 } from "@heroicons/react/20/solid"
+import { useMessages } from "@/lib/i18n"
 
 export function AuthButton() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const supabase = createClient()
   const router = useRouter()
+  const { messages: m } = useMessages()
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -35,7 +37,7 @@ export function AuthButton() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null)
-        // provider_token is only present right after OAuth login — persist it
+        // provider_token is only present right after OAuth login-persist it
         if (session?.provider_token) {
           localStorage.setItem("gh_provider_token", session.provider_token)
         }
@@ -88,20 +90,20 @@ export function AuthButton() {
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => router.push("/dashboard")}>
             <ClipboardDocumentListIcon className="size-4" />
-            Dashboard
+            {m.nav.dashboard}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("/")}>
+          <DropdownMenuItem onClick={() => router.push("/new-scan")}>
             <PlusIcon className="size-4" />
-            New Report
+            {m.nav.newReport}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push("/profile")}>
             <UserCircleIcon className="size-4" />
-            Profile
+            {m.nav.profile}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem variant="destructive" onClick={signOut}>
             <ArrowRightStartOnRectangleIcon className="size-4" />
-            Sign out
+            {m.nav.signOut}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -110,7 +112,7 @@ export function AuthButton() {
 
   return (
     <Button variant="outline" size="sm" onClick={signIn} className="text-xs ml-4">
-      Sign in with GitHub
+      {m.nav.signIn}
     </Button>
   )
 }

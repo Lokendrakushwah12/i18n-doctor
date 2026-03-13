@@ -9,16 +9,18 @@ import {
   TrophyIcon,
 } from "@heroicons/react/20/solid"
 import { cn } from "@workspace/ui/lib/utils"
+import { useMessages } from "@/lib/i18n"
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: ClipboardDocumentListIcon },
-  { href: "/new-scan", label: "New Scan", icon: PlusIcon },
-  { href: "/leaderboard", label: "Leaderboard", icon: TrophyIcon },
-  { href: "/profile", label: "Profile", icon: UserCircleIcon },
+  { href: "/dashboard", icon: ClipboardDocumentListIcon, key: "dashboard" as const },
+  { href: "/new-scan", icon: PlusIcon, key: "newScan" as const },
+  { href: "/leaderboard", icon: TrophyIcon, key: "leaderboard" as const },
+  { href: "/profile", icon: UserCircleIcon, key: "profile" as const },
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const { messages: m } = useMessages()
 
   return (
     <aside className="w-52 shrink-0 py-6 px-3 hidden sm:block">
@@ -37,7 +39,7 @@ export function AppSidebar() {
               )}
             >
               <item.icon className="size-4 shrink-0" />
-              {item.label}
+              {m.nav[item.key]}
             </Link>
           )
         })}

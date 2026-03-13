@@ -6,10 +6,10 @@
   "hero": {
     "badge": "Localization Health Scanner",
     "heading": "Scan & fix broken translations in any repo",
-    "description": "Paste a public GitHub repo URL and instantly get a localization health report, missing keys, untranslated strings, and coverage per locale — then fix everything in one click.",
+    "description": "Paste a public GitHub repo URL and instantly get a localization health report, missing keys, untranslated strings, and coverage per locale-then fix everything in one click.",
     "placeholder": "https://github.com/owner/repo",
     "cta": "Scan Repo",
-    "hint": "Works with any public repo — supports JSON, YAML, and .po locale files"
+    "hint": "Works with any public repo-supports JSON, YAML, and .po locale files"
   },
   "steps": {
     "title": "How it works",
@@ -19,15 +19,48 @@
     },
     "report": {
       "title": "Get a health report",
-      "description": "See per-locale coverage, missing keys, untranslated strings, and orphan keys — all in a visual dashboard."
+      "description": "See per-locale coverage, missing keys, untranslated strings, and orphan keys-all in a visual dashboard."
     },
     "fix": {
       "title": "Fix with one click",
       "description": "Lingo.dev translates all missing strings instantly. Download the fixed files or open a PR directly."
     }
   },
+  "nav": {
+    "dashboard": "Dashboard",
+    "newScan": "New Scan",
+    "leaderboard": "Leaderboard",
+    "profile": "Profile",
+    "signIn": "Sign in with GitHub",
+    "signOut": "Sign out",
+    "newReport": "New Report"
+  },
+  "dashboard": {
+    "title": "Your Reports",
+    "searchPlaceholder": "Search repos…",
+    "sortRecent": "Most recent",
+    "sortCoverageDesc": "Coverage ↓",
+    "sortCoverageAsc": "Coverage ↑",
+    "sortName": "Name A–Z",
+    "empty": "No reports yet. Scan a repo to get started.",
+    "scanRepo": "Scan a repo",
+    "noMatch": "No reports match \"{query}\"",
+    "keys": "keys",
+    "locales": "locales",
+    "missing": "missing",
+    "coverage": "coverage"
+  },
+  "newScan": {
+    "title": "New Scan",
+    "description": "Paste a public GitHub repo URL to scan for translation issues.",
+    "hint": "Supports JSON, YAML, and .po locale files"
+  },
+  "recentScans": {
+    "title": "Recent Scans",
+    "description": "See how popular open-source projects score on i18n health"
+  },
   "footer": {
-    "copyright": "© {year} i18n.doctor — Scan & fix broken translations."
+    "copyright": "© {year} i18n.doctor-Scan & fix broken translations."
   },
   "notFound": {
     "heading": "Are you lost?",

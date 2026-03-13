@@ -17,20 +17,22 @@ import {
 } from "@workspace/ui/ui/menu"
 import Link from "next/link"
 import { useMemo, useState } from "react"
+import { useMessages } from "@/lib/i18n"
 
 type SortOption = "recent" | "coverage-asc" | "coverage-desc" | "name"
 
-const sortLabels: Record<SortOption, string> = {
-  recent: "Most recent",
-  "coverage-desc": "Coverage ↓",
-  "coverage-asc": "Coverage ↑",
-  name: "Name A–Z",
-}
-
 export default function DashboardPage() {
   const { data: reports, loading } = useUserReports()
+  const { messages: m } = useMessages()
   const [search, setSearch] = useState("")
   const [sort, setSort] = useState<SortOption>("recent")
+
+  const sortLabels: Record<SortOption, string> = {
+    recent: m.dashboard.sortRecent,
+    "coverage-desc": m.dashboard.sortCoverageDesc,
+    "coverage-asc": m.dashboard.sortCoverageAsc,
+    name: m.dashboard.sortName,
+  }
 
   const filtered = useMemo(() => {
     if (!reports) return []
@@ -98,13 +100,13 @@ export default function DashboardPage() {
   return (
     <div className="mx-auto max-w-4xl w-full">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-heading text-2xl sm:text-3xl">Your Reports</h1>
+        <h1 className="font-heading text-2xl sm:text-3xl">{m.dashboard.title}</h1>
         <Button
           size="sm"
           render={
             <Link href="/new-scan">
               <PlusIcon className="size-4" />
-              New Scan
+              {m.nav.newScan}
             </Link>
           }
         />
@@ -113,7 +115,7 @@ export default function DashboardPage() {
       {reports.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-muted-foreground font-mono text-sm mb-4">
-            No reports yet. Scan a repo to get started.
+            {m.dashboard.empty}
           </p>
           <Button
             variant="outline"
@@ -121,7 +123,7 @@ export default function DashboardPage() {
             render={
               <Link href="/new-scan">
                 <PlusIcon className="size-4" />
-                Scan a repo
+                {m.dashboard.scanRepo}
               </Link>
             }
           />
@@ -132,7 +134,7 @@ export default function DashboardPage() {
             <div className="relative flex-1">
               <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
               <Input
-                placeholder="Search repos…"
+                placeholder={m.dashboard.searchPlaceholder}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-5 font-mono text-xs h-9"
@@ -145,7 +147,7 @@ export default function DashboardPage() {
                     variant="outline"
                     className="h-9"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" color="currentColor" fill="none" viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M22.75 7C22.75 7.41421 22.4142 7.75 22 7.75L2 7.75C1.58579 7.75 1.25 7.41421 1.25 7C1.25 6.58579 1.58579 6.25 2 6.25L22 6.25C22.4142 6.25 22.75 6.58579 22.75 7Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M19.75 12C19.75 12.4142 19.4142 12.75 19 12.75L5 12.75C4.58579 12.75 4.25 12.4142 4.25 12C4.25 11.5858 4.58579 11.25 5 11.25L19 11.25C19.4142 11.25 19.75 11.5858 19.75 12Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M16.75 17C16.75 17.4142 16.4142 17.75 16 17.75H8C7.58579 17.75 7.25 17.4142 7.25 17C7.25 16.5858 7.58579 16.25 8 16.25H16C16.4142 16.25 16.75 16.5858 16.75 17Z" fill="currentColor"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" color="currentColor" fill="none" viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true"><path fillRule="evenodd" clipRule="evenodd" d="M22.75 7C22.75 7.41421 22.4142 7.75 22 7.75L2 7.75C1.58579 7.75 1.25 7.41421 1.25 7C1.25 6.58579 1.58579 6.25 2 6.25L22 6.25C22.4142 6.25 22.75 6.58579 22.75 7Z" fill="currentColor"></path><path fillRule="evenodd" clipRule="evenodd" d="M19.75 12C19.75 12.4142 19.4142 12.75 19 12.75L5 12.75C4.58579 12.75 4.25 12.4142 4.25 12C4.25 11.5858 4.58579 11.25 5 11.25L19 11.25C19.4142 11.25 19.75 11.5858 19.75 12Z" fill="currentColor"></path><path fillRule="evenodd" clipRule="evenodd" d="M16.75 17C16.75 17.4142 16.4142 17.75 16 17.75H8C7.58579 17.75 7.25 17.4142 7.25 17C7.25 16.5858 7.58579 16.25 8 16.25H16C16.4142 16.25 16.75 16.5858 16.75 17Z" fill="currentColor"></path></svg>
                     {sortLabels[sort]}
                   </Button>
                 }
@@ -163,7 +165,7 @@ export default function DashboardPage() {
 
           {filtered.length === 0 ? (
             <p className="text-center text-muted-foreground font-mono text-sm py-12">
-              No reports match &ldquo;{search}&rdquo;
+              {m.dashboard.noMatch.replace("{query}", search)}
             </p>
           ) : (
             <div className="grid gap-4">
@@ -185,11 +187,11 @@ export default function DashboardPage() {
                           }
                           size="sm"
                         >
-                          {report.report.summary.avgCoverage}% coverage
+                          {report.report.summary.avgCoverage}% {m.dashboard.coverage}
                         </Badge>
                       </div>
                       <CardDescription className="font-mono text-xs">
-                        {report.report.totalSourceKeys} keys · {report.report.summary.totalLocales} locales · {report.report.summary.totalMissing} missing
+                        {report.report.totalSourceKeys} {m.dashboard.keys} · {report.report.summary.totalLocales} {m.dashboard.locales} · {report.report.summary.totalMissing} {m.dashboard.missing}
                       </CardDescription>
                       <p className="text-xs text-muted-foreground mt-1">
                         {new Date(report.created_at).toLocaleDateString(undefined, {

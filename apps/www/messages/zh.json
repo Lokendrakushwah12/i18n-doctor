@@ -26,8 +26,41 @@
       "description": "Lingo.dev 可瞬间翻译所有缺失内容。下载修正文件或直接打开 PR。"
     }
   },
+  "nav": {
+    "dashboard": "仪表盘",
+    "newScan": "新扫描",
+    "leaderboard": "排行榜",
+    "profile": "个人资料",
+    "signIn": "使用 GitHub 登录",
+    "signOut": "退出登录",
+    "newReport": "新报告"
+  },
+  "dashboard": {
+    "title": "你的报告",
+    "searchPlaceholder": "搜索仓库…",
+    "sortRecent": "最近",
+    "sortCoverageDesc": "覆盖率 ↓",
+    "sortCoverageAsc": "覆盖率 ↑",
+    "sortName": "名称 A–Z",
+    "empty": "暂无报告。扫描一个仓库开始使用。",
+    "scanRepo": "扫描仓库",
+    "noMatch": "没有匹配 \"{query}\" 的报告",
+    "keys": "键",
+    "locales": "语言",
+    "missing": "缺失",
+    "coverage": "覆盖率"
+  },
+  "newScan": {
+    "title": "新扫描",
+    "description": "粘贴公开 GitHub 仓库链接以扫描翻译问题。",
+    "hint": "支持 JSON、YAML 和 .po 语言文件"
+  },
+  "recentScans": {
+    "title": "最近扫描",
+    "description": "查看热门开源项目的 i18n 健康评分"
+  },
   "footer": {
-    "copyright": "© {year} i18n.doctor — 扫描并修复翻译问题。"
+    "copyright": "© {year} i18n.doctor-扫描并修复翻译问题。"
   },
   "notFound": {
     "heading": "迷路了吗？",

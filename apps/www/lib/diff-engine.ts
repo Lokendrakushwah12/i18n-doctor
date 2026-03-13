@@ -1,5 +1,5 @@
 /**
- * Diff engine — compares locale key maps against a source locale to produce
+ * Diff engine-compares locale key maps against a source locale to produce
  * a health report with coverage stats, missing keys, untranslated strings,
  * and orphan keys.
  */

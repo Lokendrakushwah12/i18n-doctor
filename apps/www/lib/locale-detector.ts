@@ -1,5 +1,5 @@
 /**
- * Locale file detector — scans a repo file tree and identifies translation
+ * Locale file detector-scans a repo file tree and identifies translation
  * files in common i18n patterns.
  *
  * Supported patterns:
@@ -73,7 +73,7 @@ function localeFromFilename(filename: string): string | null {
 
 /**
  * Given the full file tree of a repo, detect locale file groups.
- * Returns an array of `LocaleFileGroup`s — one per detected base directory.
+ * Returns an array of `LocaleFileGroup`s-one per detected base directory.
  */
 export function detectLocaleFiles(tree: TreeNode[]): LocaleFileGroup[] {
   const groups = new Map<string, LocaleFileGroup>()
