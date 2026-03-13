@@ -233,6 +233,8 @@ function ReportContent() {
   const [loading, setLoading] = useState(true)
   const [completedSteps, setCompletedSteps] = useState(-1)
 
+  const scanStarted = useRef(false)
+
   useEffect(() => {
     const repo = repoRef.current
     if (!repo) {
@@ -240,6 +242,10 @@ function ReportContent() {
       setLoading(false)
       return
     }
+
+    // Prevent StrictMode double-fire in dev
+    if (scanStarted.current) return
+    scanStarted.current = true
 
     async function scan() {
       let gotResult = false
