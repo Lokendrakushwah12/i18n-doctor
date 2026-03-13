@@ -81,7 +81,7 @@ export default function Page() {
         <Separator />
 
         <div className="w-full px-4 py-16 sm:py-24">
-          <div className="mx-auto max-w-4xl">
+          <div className="mx-auto max-w-4xl w-full">
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-center mb-12">
               How it works
             </h2>

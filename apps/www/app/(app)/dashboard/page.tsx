@@ -12,14 +12,31 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-24">
-        <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />
+      <div className="mx-auto max-w-4xl animate-pulse">
+        <div className="flex items-center justify-between mb-8">
+          <div className="h-8 w-40 rounded-md bg-muted" />
+          <div className="h-8 w-24 rounded-md bg-muted" />
+        </div>
+        <div className="grid gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Card key={i} className="gap-2 py-4 px-4">
+              <CardHeader className="p-0">
+                <div className="flex items-center justify-between">
+                  <div className="h-5 w-48 rounded bg-muted" />
+                  <div className="h-5 w-24 rounded-full bg-muted" />
+                </div>
+                <div className="h-3 w-56 rounded bg-muted mt-2" />
+                <div className="h-3 w-32 rounded bg-muted mt-1" />
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-4xl w-full">
       <div className="flex items-center justify-between mb-8">
         <h1 className="font-heading text-2xl sm:text-3xl">Your Reports</h1>
         <Button

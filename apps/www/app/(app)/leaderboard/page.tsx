@@ -38,7 +38,7 @@ export default function LeaderboardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-4xl w-full">
       <div className="mb-8">
         <h1 className="font-heading text-2xl sm:text-3xl">i18n Leaderboard</h1>
         <p className="text-sm text-muted-foreground mt-1">
