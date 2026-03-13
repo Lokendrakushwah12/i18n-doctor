@@ -26,6 +26,7 @@ import { useSearchParams } from "next/navigation"
 import type { ComponentType, SVGProps } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 import { Suspense, useEffect, useRef, useState } from "react"
+import { toastManager } from "@workspace/ui/ui/toast"
 
 interface ScanResponse {
   reportId?: string
@@ -160,6 +161,7 @@ function ShareButton() {
       onClick={() => {
         navigator.clipboard.writeText(window.location.href)
         setCopied(true)
+        toastManager.add({ title: "Link copied to clipboard", type: "success" })
         setTimeout(() => setCopied(false), 2000)
       }}
     >
@@ -289,11 +291,13 @@ function ReportContent() {
               }
               // Invalidate dashboard & leaderboard caches so new scan shows up
               queryClient.invalidateQueries({ queryKey: ["reports"] })
+              toastManager.add({ title: "Scan complete", type: "success" })
               setLoading(false)
             } else if (event === "error") {
               gotResult = true
               setError(payload.error)
               if (payload.hint) setError((prev) => `${prev}. ${payload.hint}`)
+              toastManager.add({ title: payload.error, type: "error" })
               setLoading(false)
             }
           }
@@ -311,7 +315,10 @@ function ReportContent() {
           if (buffer.trim()) processBuffer()
         }
       } catch {
-        if (!gotResult) setError("Network error. Please try again.")
+        if (!gotResult) {
+          setError("Network error. Please try again.")
+          toastManager.add({ title: "Network error. Please try again.", type: "error" })
+        }
       } finally {
         setLoading(false)
       }

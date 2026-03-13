@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { Fustat as FontHeading, Fustat as FontSans, Geist_Mono as FontMono } from "next/font/google"
 import { QueryProvider } from "@/components/query-provider"
 import { ThemeProvider } from "@workspace/ui/components/theme-provider"
+import { ToastProvider } from "@workspace/ui/ui/toast"
 
 
 const fontSans = FontSans({
@@ -118,9 +119,11 @@ export default function RootLayout({
       >
         <QueryProvider>
           <ThemeProvider>
-            <div className="relative flex min-h-svh flex-col [--header-height:4rem] before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-sidebar overflow-clip">
-              {children}
-            </div>
+            <ToastProvider>
+              <div className="relative flex min-h-svh flex-col [--header-height:4rem] before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-sidebar overflow-clip">
+                {children}
+              </div>
+            </ToastProvider>
           </ThemeProvider>
         </QueryProvider>
       </body>

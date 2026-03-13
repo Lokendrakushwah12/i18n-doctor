@@ -39,6 +39,7 @@ import {
 } from "@workspace/ui/ui/tooltip"
 
 import { useQueryClient } from "@tanstack/react-query"
+import { toastManager } from "@workspace/ui/ui/toast"
 import { useFixLocale, useCreatePR } from "@/hooks/use-fix"
 import type { FixResult, FixProgress } from "@/hooks/use-fix"
 import { useCurrentUser, useReport } from "@/hooks/use-reports"
@@ -91,6 +92,11 @@ export function FixButton({ reportId, locale }: { reportId: string; locale: Loca
         onSuccess: (data) => {
           setProgress(null)
           try { localStorage.setItem(cacheKey(reportId, locale.locale), JSON.stringify(data)) } catch { /* ignore */ }
+          toastManager.add({ title: `Fixed ${data.count} keys for ${locale.locale}`, type: "success" })
+        },
+        onError: (err) => {
+          setProgress(null)
+          toastManager.add({ title: err instanceof Error ? err.message : "Fix failed", type: "error" })
         },
       },
     )
@@ -105,6 +111,7 @@ export function FixButton({ reportId, locale }: { reportId: string; locale: Loca
     a.download = `${locale.locale}.json`
     a.click()
     URL.revokeObjectURL(url)
+    toastManager.add({ title: `Downloaded ${locale.locale}.json`, type: "success" })
   }
 
   function handleOpenPR() {
@@ -116,7 +123,11 @@ export function FixButton({ reportId, locale }: { reportId: string; locale: Loca
           setPrUrl(url)
           try { localStorage.setItem(prKey(reportId, locale.locale), url) } catch { /* ignore */ }
           queryClient.invalidateQueries({ queryKey: ["report", reportId] })
+          toastManager.add({ title: `Draft PR created for ${locale.locale}`, type: "success" })
           window.open(url, "_blank")
+        },
+        onError: (err) => {
+          toastManager.add({ title: err instanceof Error ? err.message : "Failed to create PR", type: "error" })
         },
       },
     )
