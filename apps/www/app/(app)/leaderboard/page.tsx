@@ -31,8 +31,42 @@ export default function LeaderboardPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-24">
-        <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />
+      <div className="mx-auto max-w-4xl animate-pulse">
+        <div className="mb-8">
+          <div className="h-8 w-48 rounded-md bg-muted" />
+          <div className="h-4 w-80 rounded bg-muted mt-2" />
+        </div>
+        <Frame>
+          <FramePanel>
+            <Table className="rounded-xl overflow-hidden">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="font-mono text-xs w-10">#</TableHead>
+                  <TableHead className="font-mono text-xs">Repository</TableHead>
+                  <TableHead className="font-mono text-xs text-right">Keys</TableHead>
+                  <TableHead className="font-mono text-xs text-right">Locales</TableHead>
+                  <TableHead className="font-mono text-xs">Coverage</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="before:rounded-t-none!">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <TableRow key={i}>
+                    <TableCell><div className="h-4 w-4 rounded bg-muted" /></TableCell>
+                    <TableCell><div className="h-4 w-36 rounded bg-muted" /></TableCell>
+                    <TableCell className="text-right"><div className="h-4 w-10 rounded bg-muted ml-auto" /></TableCell>
+                    <TableCell className="text-right"><div className="h-4 w-6 rounded bg-muted ml-auto" /></TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <div className="h-5 flex-1 rounded bg-muted" />
+                        <div className="h-5 w-12 rounded-full bg-muted" />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </FramePanel>
+        </Frame>
       </div>
     )
   }

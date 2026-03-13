@@ -108,16 +108,7 @@ export async function POST(req: NextRequest) {
           )
           const { data: { user } } = await supabase.auth.getUser()
 
-          // Check if a report for this repo already exists — update instead of duplicating
-          const { data: existing } = await supabase
-            .from("reports")
-            .select("id")
-            .eq("repo_owner", owner)
-            .eq("repo_name", repo)
-            .order("created_at", { ascending: false })
-            .limit(1)
-            .single()
-
+          // Check if the current user already has a report for this repo
           const reportPayload = {
             repo_url: `https://github.com/${owner}/${repo}`,
             repo_owner: owner,
@@ -130,11 +121,25 @@ export async function POST(req: NextRequest) {
             user_id: user?.id ?? null,
           }
 
+          // Only try to update the user's own report (RLS silently blocks updating other users' rows)
+          let existing: { id: string } | null = null
+          if (user?.id) {
+            const { data } = await supabase
+              .from("reports")
+              .select("id")
+              .eq("repo_owner", owner)
+              .eq("repo_name", repo)
+              .eq("user_id", user.id)
+              .order("created_at", { ascending: false })
+              .limit(1)
+              .single()
+            existing = data
+          }
+
           if (existing) {
-            // Update existing report with fresh scan data
             await supabase
               .from("reports")
-              .update({ report: reportPayload.report, user_id: reportPayload.user_id })
+              .update({ report: reportPayload.report })
               .eq("id", existing.id)
             reportId = existing.id
           } else {

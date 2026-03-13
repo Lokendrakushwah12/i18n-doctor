@@ -65,8 +65,14 @@ export async function getRepoInfo(
     headers: headers(),
   })
   if (!res.ok) {
-    if (res.status === 404) throw new Error("Repository not found")
-    if (res.status === 403) throw new Error("GitHub API rate limit exceeded")
+    if (res.status === 404) throw new Error("Repository not found — check the URL and make sure it's a public repo")
+    if (res.status === 403) {
+      const resetHeader = res.headers.get("x-ratelimit-reset")
+      const resetIn = resetHeader ? Math.max(0, Math.ceil((Number(resetHeader) * 1000 - Date.now()) / 60000)) : null
+      throw new Error(
+        `GitHub API rate limit exceeded${resetIn ? ` — resets in ~${resetIn} min` : ""}. Try again later.`
+      )
+    }
     throw new Error(`GitHub API error: ${res.status}`)
   }
   const data = await res.json()

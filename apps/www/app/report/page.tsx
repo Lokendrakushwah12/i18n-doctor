@@ -24,6 +24,7 @@ import { Separator } from "@workspace/ui/ui/separator"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import type { ComponentType, SVGProps } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { Suspense, useEffect, useRef, useState } from "react"
 
 interface ScanResponse {
@@ -226,6 +227,7 @@ function ReportContent() {
   const searchParams = useSearchParams()
   const repoUrl = searchParams.get("repo")
   const repoRef = useRef(repoUrl)
+  const queryClient = useQueryClient()
   const [data, setData] = useState<ScanResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -279,6 +281,8 @@ function ReportContent() {
               if (payload.reportId) {
                 window.history.replaceState(null, "", `/report/${payload.reportId}`)
               }
+              // Invalidate dashboard & leaderboard caches so new scan shows up
+              queryClient.invalidateQueries({ queryKey: ["reports"] })
               setLoading(false)
             } else if (event === "error") {
               gotResult = true

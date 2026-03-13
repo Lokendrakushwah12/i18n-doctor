@@ -18,18 +18,23 @@ Developers ship apps with broken i18n all the time - new UI strings go untransla
 
 - **Repo Scanner** — auto-detects locale/translation files (JSON, YAML, `.po`) in common patterns like `locales/`, `i18n/`, `public/locales/`
 - **Health Dashboard** — per-locale coverage %, visual progress bars, summary cards (total keys, missing, untranslated, orphan)
-- **One-Click Fix** — translates all missing/empty strings via Lingo.dev SDK, shows a live diff, generates downloadable ZIP
-- **Shareable Report Card** — every scan generates a unique URL with social-share friendly summary
+- **One-Click Fix** — translates all missing/empty strings via Lingo.dev SDK with parallel chunked translation, real-time progress, and live diff preview
+- **Draft PR** — creates a GitHub PR with the fixed translations (forks the repo if you don't own it)
+- **Download JSON** — export the merged locale file directly
+- **Shareable Reports** — every scan generates a unique URL with dynamic OG image for social sharing
+- **Leaderboard** — compare translation coverage across repos you've scanned
+- **GitHub OAuth** — sign in to access your dashboard, create PRs, and track scans
+- **Responsive UI** — mobile bottom nav, skeleton loading states, dark/light mode
 
 ## Tech Stack
 
 | Layer | Choice |
 |---|---|
-| Frontend | Next.js (App Router) + Tailwind CSS |
-| Backend/DB | Supabase |
-| Translation | Lingo.dev SDK + CLI |
-| Repo Access | GitHub REST API (Octokit) |
-| Auth (stretch) | GitHub OAuth via Supabase |
+| Frontend | Next.js 15 (App Router) + React 19 + Tailwind CSS v4 |
+| Backend/DB | Supabase (PostgreSQL + RLS) |
+| Translation | Lingo.dev SDK + CLI + GitHub Action |
+| Repo Access | GitHub REST API |
+| Auth | GitHub OAuth via Supabase |
 | Deployment | Vercel |
 
 ## Lingo.dev Integration
@@ -62,9 +67,10 @@ Create `apps/www/.env.local`:
 
 ```ini
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-SUPABASE_URL=your-supabase-url
-SUPABASE_ANON_KEY=your-supabase-anon-key
-GITHUB_TOKEN=your-github-token (optional, for higher rate limits)
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+GITHUB_TOKEN=your-github-token (optional, raises rate limit from 60 to 5000 req/h)
+LINGODOTDEV_API_KEY=your-lingo-api-key (required for one-click fix)
 ```
 
 ### 3. Start the development server
@@ -112,11 +118,11 @@ The app runs at `http://localhost:3000`.
 - [x] Open a GitHub PR with fixes (uses GitHub OAuth token + `public_repo` scope)
 
 ### Polish & Ship
-- [ ] Responsive UI polish & loading states
-- [ ] OG image / social share card for reports
-- [ ] Error handling & edge cases (rate limits, large repos, malformed files)
+- [x] Responsive UI — mobile bottom nav, skeleton loading states for all pages
+- [x] Dynamic OG image — per-report social share cards with coverage stats
+- [x] Error handling — rate limit messages with reset timer, repo not found hints, graceful stream errors
 - [x] Deploy to Vercel
-- [ ] Final README, demo video, hackathon submission
+- [x] Final README & hackathon submission
 
 ## Technical Notes
 

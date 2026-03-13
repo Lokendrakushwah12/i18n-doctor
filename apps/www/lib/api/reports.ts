@@ -63,11 +63,13 @@ export async function fetchRecentPublicReports(limit = 10) {
 /** Fetch all reports for a specific user */
 export async function fetchUserReports(userId: string) {
   const supabase = createClient()
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("reports")
     .select("*")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
+
+  if (error) console.error("[fetchUserReports] error:", error.message, "userId:", userId)
 
   return (data as ReportSummaryRow[]) ?? []
 }
@@ -90,7 +92,8 @@ export async function fetchUserLeaderboard(userId: string) {
 /** Get the current authenticated user ID (or null) */
 export async function getCurrentUserId() {
   const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user }, error } = await supabase.auth.getUser()
+  if (error) console.error("[getCurrentUserId] auth error:", error.message)
   return user?.id ?? null
 }
 
