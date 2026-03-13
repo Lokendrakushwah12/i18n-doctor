@@ -18,7 +18,7 @@ import { cn } from "@workspace/ui/lib/utils"
 
 const mobileNavItems = [
   { href: "/dashboard", label: "Reports", icon: ClipboardDocumentListIcon },
-  { href: "/", label: "Scan", icon: PlusIcon },
+  { href: "/new-scan", label: "Scan", icon: PlusIcon },
   { href: "/leaderboard", label: "Board", icon: TrophyIcon },
   { href: "/profile", label: "Profile", icon: UserCircleIcon },
 ]
