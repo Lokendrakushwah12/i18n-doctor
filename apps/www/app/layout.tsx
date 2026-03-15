@@ -6,7 +6,7 @@ import { QueryProvider } from "@/components/query-provider"
 import { I18nProvider } from "@/components/i18n-provider"
 import { ThemeProvider } from "@workspace/ui/components/theme-provider"
 import { ToastProvider } from "@workspace/ui/ui/toast"
-
+import { Analytics } from "@vercel/analytics/next"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -118,6 +118,7 @@ export default function RootLayout({
       <body
         className={`${fontSans.variable} ${fontHeading.variable} ${fontMono.variable} bg-sidebar font-sans text-foreground antialiased`}
       >
+        <Analytics />
         <QueryProvider>
           <ThemeProvider>
             <I18nProvider>
